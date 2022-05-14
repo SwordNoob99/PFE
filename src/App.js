@@ -12,6 +12,7 @@ import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GetProjectInfo from './components/projectComponents/GetProjectInfo';
 import GetProjects from './components/projectComponents/GetProjects'
+import Login from './components/accessComponents/Login';
 
 function App() {
 
@@ -39,7 +40,11 @@ function App() {
            
             </Route>
 
- 
+            <Route path='/login' element= { < Login />} >
+                  
+           
+            </Route>
+
 
             <Route path='/project' element= { < GetProjectInfo />} >
                   
