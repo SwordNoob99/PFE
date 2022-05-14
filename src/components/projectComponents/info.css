@@ -1,0 +1,82 @@
+
+
+.project-informations {
+
+    /* height: 900px;
+    background-color: black; */
+
+    margin-top: 50px;
+    height: 100px;
+    background-color: #f1f1f1;
+    text-align:center; 
+    display:table;
+    width:100%;
+    box-shadow: 0px 1px 4px 1px gray;
+    margin-bottom: 20px;
+
+}
+
+.project-informations-title{
+ 
+    display:table-cell; vertical-align:middle;
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px ;
+   
+}
+
+.project-form{
+    margin-top: 120px;
+ 
+
+}
+
+.project-form-control {
+
+    padding-top: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-right: 0px;
+    padding-right: 0px;
+    width: 100%;
+   
+}
+
+.p-form-control {
+
+    float: left;
+    width: 50%;
+}
+
+.projectImage {
+    float: right;
+    height: 300px;
+    width: 20%;
+    margin-right: 50px ;
+    background-color: gray;
+    padding-left: 0;
+    margin-left: 0;
+    margin-bottom: 30px;
+    border-radius: 30px;
+    display: flex; 
+    flex-direction: column;
+}
+
+.projectImage:hover {
+   
+    background-color: rgb(49, 46, 46);
+  
+}
+
+.project-form-control-image {
+  
+
+    margin-top: auto;
+}
+
+.add-icon {
+    float: right;
+    
+  
+}
