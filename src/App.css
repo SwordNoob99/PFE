@@ -9,8 +9,20 @@
   font-family: 'Lato' , sans-serif;
 }
 
-.container-scroller {
+.container-scroller-expand {
 
+  margin-left: 240px;
+  transition-duration: 400ms;
+transition-property: margin-left;
+
+}
+
+.container-scroller {
+  margin-left: 120px;
+  transition-duration: 300ms;
+transition-property: margin-left;
+
+  
 }
 
 
@@ -18,7 +30,7 @@
 .main-panel {
 
  
-  margin-left: 300px;
+
   margin-top: 150px;
 
 }

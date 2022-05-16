@@ -13,7 +13,7 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { RiFileInfoFill  } from "react-icons/ri";
-  
+import Box from '@mui/material/Box';
   function createData(name, calories, fat, carbs, protein) {
   
     return { name, calories, fat, carbs, protein };
@@ -89,79 +89,8 @@ class GetProjectInfo extends Component {
        
   return (
 
-
-    <div className="component-container"  >
-
-      
-
-      <div className="component-nav">
-
-      
-      <div className="component-info">
-      <IconContext.Provider value={{color : "#020624" , className : "component-info-icon" }}  >
-                            
-                                <RiFileInfoFill size={"70"} />
-                             
-                            
-                                </IconContext.Provider >
-
-      </div>
-      <a  className="component-nav-icon">
-      <IconContext.Provider value={{color : "white"}}>
-                                <Link to="/">
-                                <IoReturnDownBack size={"40"} />
-                             
-                                </Link>
-                                </IconContext.Provider >
-                            </a>
-                            
-      </div>
-
-      <div className="page-info">
-      <div className="project-component-nav" >
-
-          <ul>
-
-              <li>
-              <button onClick={() => this.setState({comp : 1})}  type="button" className="btn btn-lg nav-button ">Infos</button>
-                  
-              </li>
-              <li>
-              <button onClick={() => this.setState({comp : 2})}  type="button" className="btn btn-lg nav-button ">Documents</button>
-              </li>
-              <li>
-              <button onClick={() => this.setState({comp : 3})} type="button" className="btn btn-lg nav-button">Sharing</button>
-              </li>
-          </ul>
-
-        
-
-          {
-
-              this.state.comp == 1 ? <Info /> : ''
-          }
-
-{
-
-this.state.comp == 2 ? <Documents /> : ''
-}
-
-
-{
-
-this.state.comp == 3 ? <Sharing /> : ''
-}
-
-
-
-
-
-
-</div>
+ <Box> </Box>
     
-</div>
-
-</div>
 
   );
     }

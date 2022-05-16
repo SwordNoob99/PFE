@@ -14,7 +14,7 @@ export const SidebarData = [
 {
     title : 'Infos' ,
     path : '/project',
-    icon : <AIcons.AiFillHome /> ,
+    icon : <AIcons.AiFillHome size={20} /> ,
     cName : 'nav-text'
 
 
@@ -22,7 +22,7 @@ export const SidebarData = [
 {
     title : 'Plans' ,
     path : '/reports',
-    icon : <IoDocumentsSharp /> ,
+    icon : <IoDocumentsSharp size={20}/> ,
     cName : 'nav-text'
 
 
@@ -30,7 +30,7 @@ export const SidebarData = [
 {
     title : 'Planning' ,
     path : '/projects',
-    icon : <AIcons.AiOutlineSchedule /> ,
+    icon : <AIcons.AiOutlineSchedule size={20} /> ,
     cName : 'nav-text'
 
 
@@ -38,7 +38,7 @@ export const SidebarData = [
 {
     title : 'Meetings' ,
     path : '/',
-    icon : <MdMeetingRoom /> ,
+    icon : <MdMeetingRoom size={20} /> ,
     cName : 'nav-text'
 
 
@@ -46,7 +46,7 @@ export const SidebarData = [
 {
     title : 'Issues' ,
     path : '/',
-    icon : <AiOutlineIssuesClose /> ,
+    icon : <AiOutlineIssuesClose size={20} /> ,
     cName : 'nav-text'
 
 
@@ -54,7 +54,7 @@ export const SidebarData = [
 {
     title : 'Remarks' ,
     path : '/',
-    icon : <IoBulbOutline /> ,
+    icon : <IoBulbOutline size={20} /> ,
     cName : 'nav-text'
 
 
@@ -62,7 +62,7 @@ export const SidebarData = [
 {
     title : 'Reports' ,
     path : '/',
-    icon : <HiDocumentReport /> ,
+    icon : <HiDocumentReport size={20} /> ,
     cName : 'nav-text'
 
 

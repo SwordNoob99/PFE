@@ -14,13 +14,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/userSlice';
-import axios from 'axios';
-import { HistoryRouterProps } from 'react-router-dom';
-import { changeState } from '../features/appBarSlice';
-import { useSelector } from 'react-redux';
-import { add } from '../features/userProjectsSlice';
-
-
 
 function Copyright(props) {
   return (
@@ -42,11 +35,8 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login(props) {
-  
+export default function Login() {
 
-
-  let user_id = 0;
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,65 +46,11 @@ export default function Login(props) {
       password: data.get('password'),
     });
 
-    let user = null
-    let token = null
-    let accessToken = null
-    let isLoggedIn = false
-    let redirect = false;
+    dispatch(login ({
 
-    axios.post(`http://127.0.0.1:8000/api/v1/login` , {
-      'email' : data.get('email') ,
-      'password' : data.get('password')
-    }).then(
-        res => {
-           
-            user = res.data.user
-            accessToken = res.data.acces_token
-            isLoggedIn = true
-            redirect = true
-
-            dispatch(login ({
-
-              user ,
-                    accessToken ,
-                    isLoggedIn 
-              }))
-
-              dispatch(changeState (false))
-
-              user_id = user.id ;
-              token = accessToken
-           
-              axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ,{  headers: { 'Content-Type' : 'application/json',
-              'Accept' : 'application/json', "Authorization" : `Bearer ${token}` } }).then(
-                  res => {
-                     
-          
-                     
-                     let  projects = res.data.projects
-                     console.log(projects);
-                      dispatch(add ({
-
-                        projects
-                        }))
-                      
-
-        
-                  },
-              ).catch(error => {
-                console.log(error)
-              } )
-          
-        },
-    ).catch(error => {
-      console.log(error)
-    } )
-    
-   
-
-    
-
-    
+      email : email ,
+      password : password
+      }))
 
   };
 
@@ -165,8 +101,7 @@ export default function Login(props) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }
-            }
+              sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
