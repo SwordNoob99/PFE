@@ -21,6 +21,24 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { addProject } from "../features/projectSlice";
+import { useSelector } from 'react-redux';
+import  { useState, useEffect } from 'react';
+import selectProjects from "../features/userProjectsSlice";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { add } from '../features/userProjectsSlice';
+import CircularProgress from '@mui/material/CircularProgress';
+import { makeStyles } from "@material-ui/core/styles";
+import { selectFirstProject } from '../features/projectSlice';
+import { Navigate } from "react-router";
 
 
 interface TablePaginationActionsProps {
@@ -59,6 +77,8 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   
 
   return (
+
+    
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
         onClick={handleFirstPageButtonClick}
@@ -96,11 +116,50 @@ function createData(name: string, calories: number, fat: number) {
   return { name, calories, fat };
 }
 
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    top: "auto",
+    bottom: 0,
+    textAlign:"center"
+  },
+  footer: {
+    display:"flex",
+    justifyContent:"center",
+  },
+
+  tr: {
+    color: "#17202A",
+    fontSize : "50px" ,
+    textDecoration : "none" ,
+    '&:hover': {
+       background: "#212F3D",
+       color: "white",
+    },
+  },
+
+  
+
+}));
+
 
 export default function CustomPaginationActionsTable(props) {
+
+ 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const rows = props.projects ;
+  const [projectName , setProjectName] = React.useState("");
+
+  
+  
+  
+
+  const [rows , setRows] = useState([]);
+
+  const [rerender, setRerender] = useState(false);
+
+
+
+  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -112,10 +171,129 @@ export default function CustomPaginationActionsTable(props) {
     setPage(newPage);
   };
 
-  const handleSelectProject = (id) => {
+  const select = useSelector
+  let projects =  select((state : any )=> state.userProjectsReducer.userProjects?.projects)
+
+  // new state for loading
+
+  const[loading , setLoading] = useState(false);
+
+  // submit handler for create project
+
+  // declare promise
+  // get token first
+
+
+  const accessToken = select((state : any )=> state.userReducer.user.accessToken)
+  const user_id =  select((state : any )=> state.userReducer.user.user.id)
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+  function  promise   (accessToken , user_id)  {
+
+  
+    
+      
+          
+        // SEND REQUEST TO ADD PROJECT
+        axios.post(`http://127.0.0.1:8000/api/v1/project` , {
+          'projectName' : projectName
+        }).then ( result => {
 
         
+          let selectedProject = result.data.project;
+         
+          dispatch(addProject(selectedProject))
+
+          let projectSelected = true
+          dispatch(selectFirstProject({projectSelected}))
+          setLoading(false)
+          setProjectSele(false)
+              
+                      
+        }
+        ).catch(error => {
+          console.log(error)
+        } )
+
+         // GET NEW PROJECTS ARRAY
+
+         axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ).then(
+          res => {
+             
+           let projects =  res.data.projects
+
+           dispatch(add ({
+
+            projects
+            }))
+           
+            setLoading(false)
+
+
+          },
+      ).catch(error => {
+        console.log(error)
+      } )
+
+
+       
+
+
+      
+    
+
+  } 
+
+  const createProject = () => {
+    setLoading(true)
+    setDialogueOpen(false);
+    promise(accessToken , user_id)
+    
+   
+    
   }
+
+  useEffect(()=>{
+
+
+
+
+        setRows(projects)
+    
+       
+  } , [projects])
+     
+
+    const handleTextFieldChange = (event) => {
+      setProjectName(event.target.value)
+     
+    }
+     
+   
+ 
+
+  const dispatch = useDispatch();
+  const [result, setResult] = useState(false);
+  const handleSelectProject = (id) => {
+    
+    setLoading(true)
+
+    setTimeout(() => {
+
+      let selectedProject = rows.find((element) => {
+        return element.id === id;
+      })
+  
+       dispatch(addProject(selectedProject))
+       setLoading(false)
+       setResult(true)
+      
+    }, 3000);
+    
+   
+
+  }
+
+  const [projectSele , setProjectSele] = useState(true)
 
   const Div = styled('div')(({ theme }) => ({
     ...theme.typography.button,
@@ -129,27 +307,63 @@ export default function CustomPaginationActionsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const [dialogueOpen , setDialogueOpen] = useState(false); 
+
+  const handleClickDialogueOpen = () => {
+    setDialogueOpen(true);
+  };
+
+  const  handleClickDialogueClose = () => {
+    setDialogueOpen(false);
+  };
+  const classes = useStyles();
 
   return (
+
+  
+
+   
+    <Dialog  PaperProps={{
+style: {
+backgroundColor: 'transparent',
+boxShadow: 'none',
+},
+}} maxWidth="md" open={projectSele} >
+
+<DialogContent>
+
+{!!result && (
+      <Navigate
+        to={{ pathname: "/project", state: { data: result } }}
+      />
+    )}
+
+
+    
     <Paper elevation={3}>
 
-<Grid container spacing={2}>
-<Grid item xs={8}>
-  <Box sx={{ width: '100%', fontSize : "100px" , float : "right"}} style={{ float : "right" }}>
-      <Typography variant="h4" component="div" gutterBottom style={{ float : "right" }}>
-        Select a project or add a new one
-      </Typography>
-      </Box>
+
+
+
+
+    <Grid className={classes.footer} >
+
+
       </Grid>
+      <Grid item xs={2}  style={{ float : "right" }}>
+      <Button onClick={handleClickDialogueOpen} variant="contained">Add</Button>
+      </Grid>
+
+     
 <Grid item xs={12}>
       <Table  aria-label="custom pagination table">
         <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          {(rowsPerPage > 0 
+            ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
-            <TableRow  key={row.id}>
-              <TableCell onClick={() => handleSelectProject(row.is)} component="th" scope="row">
+          )?.map((row) => (
+            <TableRow className={classes.tr} key={row.id}>
+              <TableCell  onClick={() => handleSelectProject(row.id)} scope="row">
                 {row.projectName}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
@@ -171,7 +385,7 @@ export default function CustomPaginationActionsTable(props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={3}
-              count={rows.length}
+              count={rows?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
@@ -188,9 +402,44 @@ export default function CustomPaginationActionsTable(props) {
         </TableFooter>
       </Table>
 
+      <Dialog  PaperProps={{
+    style: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    },
+  }} maxWidth="md" open={loading} onClose={handleClickDialogueClose}>
+   
+        <DialogContent>
+        {loading && <CircularProgress color="secondary" />} 
+          
+        </DialogContent>
+      
+      </Dialog>
+
+   
+      </Grid>
      
-      </Grid>
-      </Grid>
+      <Dialog maxWidth="md" open={dialogueOpen} onClose={handleClickDialogueClose}>
+        <DialogTitle>Add</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Add new project name
+          </DialogContentText>
+          <TextField value={projectName} id="standard-basic" label="Standard" variant="standard" onChange={(event) => handleTextFieldChange(event)}/>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClickDialogueClose}>Cancel</Button>
+          <Button onClick={createProject}>Add</Button>
+        
+        </DialogActions>
+      </Dialog>
     </Paper>
+
+    </DialogContent>
+
+</Dialog>
   );
+
 }
+

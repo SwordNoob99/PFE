@@ -13,14 +13,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/userSlice';
+import { login , justLogged} from '../features/userSlice';
 import axios from 'axios';
 import { HistoryRouterProps } from 'react-router-dom';
 import { changeState } from '../features/appBarSlice';
 import { useSelector } from 'react-redux';
 import { add } from '../features/userProjectsSlice';
-
-
+import { Navigate } from "react-router";
+import { useState } from 'react';
 
 function Copyright(props) {
   return (
@@ -45,7 +45,7 @@ const theme = createTheme();
 export default function Login(props) {
   
 
-
+  const [result, setResult] = useState();
   let user_id = 0;
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
@@ -72,7 +72,7 @@ export default function Login(props) {
             accessToken = res.data.acces_token
             isLoggedIn = true
             redirect = true
-
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
             dispatch(login ({
 
               user ,
@@ -80,24 +80,25 @@ export default function Login(props) {
                     isLoggedIn 
               }))
 
+              dispatch(justLogged (true))
+
               dispatch(changeState (false))
 
               user_id = user.id ;
               token = accessToken
            
-              axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ,{  headers: { 'Content-Type' : 'application/json',
-              'Accept' : 'application/json', "Authorization" : `Bearer ${token}` } }).then(
+              axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ).then(
                   res => {
                      
-          
+                   
                      
                      let  projects = res.data.projects
-                     console.log(projects);
+                  
                       dispatch(add ({
 
                         projects
                         }))
-                      
+                      setResult(true)
 
         
                   },
@@ -121,6 +122,11 @@ export default function Login(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+      {!!result && (
+        <Navigate
+          to={{ pathname: "/projects", state: { data: result } }}
+        />
+      )}
         <CssBaseline />
         <Box
           sx={{
@@ -172,12 +178,12 @@ export default function Login(props) {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/forgot" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

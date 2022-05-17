@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Navigate } from "react-router";
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function RegisterDialogForm ()  {
+export default function Forgot ()  {
     const [formValues, setFormValues] = useState({
         preName: '',
         lastName: '',
@@ -26,17 +26,17 @@ export default function RegisterDialogForm ()  {
 
         setLoading(true);
         e.preventDefault();
-        console.log(formValues);
-        axios.post(`http://127.0.0.1:8000/api/v1/register` , {
+     
+        axios.post(`http://127.0.0.1:8000/api/v1/forgot` , {
       'email' : formValues.email ,
-      'password' : formValues.password ,
-      'preName' : formValues.preName ,
-      'lastName' : formValues.lastName
+      
     }).then( res => {
 
         console.log(res)
-        setResult(res.data.success)
         setLoading(false);
+        setSubmitted(res.data.success)
+        setResult(true)
+        
     }
 
     ).catch(error => {
@@ -44,6 +44,7 @@ export default function RegisterDialogForm ()  {
         console.log(error)
     })
     };
+    const [ submitted , setSubmitted] = useState(false);
 
     const handleInputChange = (e) => {
         const name = e.target.name;
@@ -70,7 +71,7 @@ export default function RegisterDialogForm ()  {
                 fullWidth
                 onClose={ handleClose}
             >
-                <DialogTitle>Register</DialogTitle>
+                <DialogTitle>Enter you email to recover password</DialogTitle>
                 <DialogContent>
                 <Dialog  PaperProps={{
     style: {
@@ -87,28 +88,7 @@ export default function RegisterDialogForm ()  {
       </Dialog>
                     <form onSubmit={onSubmit}>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="firstName"
-                                    type="text"
-                                    required
-                                    fullWidth
-                                    name="preName"
-                                    value={formValues.preName}
-                                    onChange={handleInputChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="lastName"
-                                    type="text"
-                                    required
-                                    fullWidth
-                                    name="lastName"
-                                    value={formValues.lastName}
-                                    onChange={handleInputChange}
-                                />
-                            </Grid>
+                    
                             <Grid item xs={12}>
                                 <TextField
                                     label="Email"
@@ -121,17 +101,7 @@ export default function RegisterDialogForm ()  {
                                 />
                             </Grid>
                          
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Password"
-                                    type="password"
-                                    required
-                                    name="password"
-                                    fullWidth
-                                    value={formValues.password}
-                                    onChange={handleInputChange}
-                                />
-                            </Grid>
+                            
                             <Grid item xs={12}>
                                 <Button variant="contained" onClick={() => setShowRegisterForm(false)} disableElevation>
                                     Close

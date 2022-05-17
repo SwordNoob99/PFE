@@ -10,8 +10,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import storage from "redux-persist/lib/storage";
 
-let persistor = persistStore(Store)
 
+let persistor = persistStore(Store)
+window.pers = persistor ;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 document.body.style = 'background: #f8f4f4;';
 root.render(

@@ -22,12 +22,14 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import RegisterDialogForm from "./components/accessComponents/Register"
+import Forgot from './components/accessComponents/Forgot';
 
 function App() {
 
  const  user = useSelector(state => state.userReducer.user)
   const expand = useSelector(state => state.appBarReducer.isOpen)
-  const projects = useSelector(state => state.userProjectsReducer.userProjects.projects)
+  
 
 
   
@@ -57,19 +59,19 @@ function App() {
             
           <Routes >
           <Route path="/">
-          <Route index  element= { < TableProjects projects= {projects} />} > </Route>
-            <Route  path='projects' element= { < TableProjects projects= {projects} />} > </Route>
+          <Route index  element= { < TableProjects  />} > </Route>
+            <Route  path='projects' element= { < TableProjects />} > </Route>
             
          
-             
+       
 
-        
-         
+          
+          <Route path='register' element= { <RegisterDialogForm />} ></Route>
 
             <Route path='project' element= { < GetProjectInfo />} ></Route>
                   
            
-            <Route path="*" element={<Navigate to="/projects" replace />} />
+            <Route path="*" element={<Navigate to="projects" replace />} />
 
         
                   
@@ -97,8 +99,9 @@ function App() {
 
 <Routes>
 <Route path='/login' element= { < Login />} > </Route>
-<Route path='/projects' element= { < TableProjects />} > </Route>
-
+<Route path="*" element={<Navigate to="/login" replace />} />
+<Route path='register' element= { <RegisterDialogForm />} ></Route>
+<Route path='forgot' element= { < Forgot />} ></Route>
 
 
 

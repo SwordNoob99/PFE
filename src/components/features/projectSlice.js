@@ -4,19 +4,35 @@ export const projectSlice = createSlice({
 
     name : "project" ,
     initialState : {
-        project : null ,
+        fullProject : {
+            selectedProject : null,
+            documents : null ,
+            collaborators : null ,
+            meetings : null ,
+            remarks : null ,
+            observations : null,
+            projectSelected : false
+
+        }
        
     },
     reducers : {
-        add : (state , action) => {
+        addProject : (state , action) => {
 
-            state.project = action.payload
+            state.fullProject.selectedProject = action.payload
+        
+        },
+        selectFirstProject : (state , action ) => {
+
+            state.fullproject.projectSelected = action.payload
+
         }
     }
 })
 
 
-export const {add } = projectSlice.actions;
-export const selectProject = (state) => state.project;
+export const { addProject , selectFirstProject } = projectSlice.actions;
+export const selectFullProject = (state) => state.project.fullProject;
+
 
 export default projectSlice.reducer;

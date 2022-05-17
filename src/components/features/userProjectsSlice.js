@@ -4,14 +4,14 @@ export const ProjectsSlice = createSlice({
 
     name : "userProjects" ,
     initialState : {
-        userProjects : null ,
-       
+        projects : null 
+        
     },
     reducers : {
         add : (state , action) => {
 
             state.userProjects = action.payload
-        }
+        } 
     }
 })
 

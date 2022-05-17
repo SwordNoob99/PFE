@@ -7,7 +7,8 @@ export const userSlice = createSlice({
         user : {
             user : null ,
             accessToken : null ,
-            isLoggedIn : false
+            isLoggedIn : false ,
+            justLoggedIn : false
         }
     },
     reducers : {
@@ -19,11 +20,14 @@ export const userSlice = createSlice({
             state.user.user = null;
             state.user.accessToken = null;
             state.user.isLoggedIn = false;
+        } ,
+        justLogged : (state , action) => {
+            state.justLoggedIn = action.payload
         }
     }
 })
 
 
-export const {login , logout} = userSlice.actions;
+export const {login , logout , justLogged} = userSlice.actions;
 export const selectUser = (state) => state.user;
 export default userSlice.reducer;

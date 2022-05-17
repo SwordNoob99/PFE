@@ -21,15 +21,30 @@ import { SidebarData } from './SidebarData';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link, Navigate } from 'react-router-dom';
 import { changeState } from '../features/appBarSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './MiniDrawer.css';
 import Login from '../accessComponents/Login';
 import { logout } from '../features/userSlice';
 import { Navigator } from 'react-router-dom';
+import { persistStore } from 'redux-persist';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import {  justLogged} from '../features/userSlice';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
-
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const drawerWidth = 240;
 
@@ -110,7 +125,16 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
+  const [temp , setTemp] = React.useState(true);
+  const justLoggedin = useSelector((state : any ) => state.userReducer.justLoggedIn)
 
+  React.useEffect(() => {
+      setTimeout(() => {
+        dispatch(justLogged(false))
+        setTemp(false)
+      }, 2000);
+   
+  }, [justLoggedin])
   const handleDrawerOpen = () => {
     setOpen(true);
 
@@ -124,21 +148,63 @@ export default function MiniDrawer() {
   };
 
   const logOut = () => {
-    dispatch(logout ())
+
+    setLoading(true)
+    setTimeout(() => {
+
+      dispatch(logout ())
+      
+    }, 2000);
+    
+
+    
+    
 
   }
 
-  
+  const [barOpen, setBarOpen] = React.useState(true);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setBarOpen(false);
+  };
+  const handleClick = () => {
+    setBarOpen(true);
+  };
+
+
+  const [ loading , setLoading] = React.useState(false);
+
+
  
 
   return (
 <>
 
-
+<Snackbar open={justLoggedin} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Logged in successfully
+        </Alert>
+      </Snackbar>
     
     <Box sx={{ display: 'flex' }}>
-
-
+    <Dialog  PaperProps={{
+    style: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    },
+  }} maxWidth="md" open={loading} >
+   
+        <DialogContent>
+        {loading && <CircularProgress color="secondary" />} 
+          
+        </DialogContent>
+      
+      </Dialog>
+  
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -195,7 +261,7 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           
-            <ListItem component={Link} to="/login"   disablePadding sx={{ display: 'block' }}>
+            <ListItem component={Link} to="/project"   disablePadding sx={{ display: 'block' }}>
               <ListItemButton onClick={logOut}
                 sx={{
                   minHeight: 48,
