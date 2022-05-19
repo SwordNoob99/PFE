@@ -24,6 +24,9 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import RegisterDialogForm from "./components/accessComponents/Register"
 import Forgot from './components/accessComponents/Forgot';
+import Observations from "./components/projectComponents/Observations"
+import Meetings from './components/projectComponents/Meetings';
+
 
 function App() {
 
@@ -61,6 +64,7 @@ function App() {
           <Route path="/">
           <Route index  element= { < TableProjects  />} > </Route>
             <Route  path='projects' element= { < TableProjects />} > </Route>
+            <Route  path='observations' element= { < Observations />} > </Route>
             
          
        
@@ -73,7 +77,7 @@ function App() {
            
             <Route path="*" element={<Navigate to="projects" replace />} />
 
-        
+            <Route path='meetings' element = { <Meetings />}></Route>
                   
            
                   

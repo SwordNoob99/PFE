@@ -11,17 +11,17 @@
 
 .container-scroller-expand {
 
-  margin-left: 240px;
+  margin-left: 280px;
   transition-duration: 400ms;
 transition-property: margin-left;
-width: 80%;
+width: 85%;
 }
 
 .container-scroller {
   margin-left: 120px;
   transition-duration: 300ms;
 transition-property: margin-left;
-width: 80%;
+width: 85%;
 
   
 }

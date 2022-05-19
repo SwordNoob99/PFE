@@ -27,7 +27,7 @@ import './MiniDrawer.css';
 import Login from '../accessComponents/Login';
 import { logout } from '../features/userSlice';
 import { Navigator } from 'react-router-dom';
-import { persistStore } from 'redux-persist';
+
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import {  justLogged} from '../features/userSlice';
@@ -37,6 +37,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
+import Store from "../../store/Store.js"
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import storage from "redux-persist/lib/storage";
+
+
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -156,7 +162,8 @@ export default function MiniDrawer() {
       
     }, 2000);
     
-
+    
+ persistStore(Store).purge()
     
     
 

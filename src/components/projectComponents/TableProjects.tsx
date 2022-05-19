@@ -39,6 +39,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { makeStyles } from "@material-ui/core/styles";
 import { selectFirstProject } from '../features/projectSlice';
 import { Navigate } from "react-router";
+import { Link } from 'react-router-dom';
 
 
 interface TablePaginationActionsProps {
@@ -172,7 +173,7 @@ export default function CustomPaginationActionsTable(props) {
   };
 
   const select = useSelector
-  let projects =  select((state : any )=> state.userProjectsReducer.userProjects?.projects)
+  
 
   // new state for loading
 
@@ -225,7 +226,7 @@ export default function CustomPaginationActionsTable(props) {
 
             projects
             }))
-           
+            setRows(projects)
             setLoading(false)
 
 
@@ -254,13 +255,31 @@ export default function CustomPaginationActionsTable(props) {
 
   useEffect(()=>{
 
+        // GET NEW PROJECTS ARRAY
+
+        axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ).then(
+          res => {
+             
+           let projects =  res.data.projects
+
+           dispatch(add ({
+
+            projects
+            }))
+           
+            setLoading(false)
+            setRows(projects)
+
+          },
+      ).catch(error => {
+        console.log(error)
+      } )
 
 
-
-        setRows(projects)
+       
     
        
-  } , [projects])
+  } , [])
      
 
     const handleTextFieldChange = (event) => {
@@ -287,7 +306,7 @@ export default function CustomPaginationActionsTable(props) {
        setLoading(false)
        setResult(true)
       
-    }, 3000);
+    }, 2000);
     
    
 
@@ -363,15 +382,12 @@ boxShadow: 'none',
             : rows
           )?.map((row) => (
             <TableRow className={classes.tr} key={row.id}>
+              <a  style={{textDecoration : "none"}}>
               <TableCell  onClick={() => handleSelectProject(row.id)} scope="row">
                 {row.projectName}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.description}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.Owner}
-              </TableCell>
+             
+              </a>
             </TableRow>
           ))}
           {emptyRows > 0 && (

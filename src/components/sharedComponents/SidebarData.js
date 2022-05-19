@@ -37,15 +37,15 @@ export const SidebarData = [
 } ,
 {
     title : 'Meetings' ,
-    path : '/',
+    path : '/meetings',
     icon : <MdMeetingRoom size={20} /> ,
     cName : 'nav-text'
 
 
 },
 {
-    title : 'Issues' ,
-    path : '/',
+    title : 'observations' ,
+    path : '/observations',
     icon : <AiOutlineIssuesClose size={20} /> ,
     cName : 'nav-text'
 
