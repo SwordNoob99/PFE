@@ -18,7 +18,7 @@ export const projectSlice = createSlice({
        
     },
     reducers : {
-        addProject : (state , action  ) => {
+        addProject : (state , action   ) => {
 
             state.fullProject.selectedProject = action.payload
             

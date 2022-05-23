@@ -46,6 +46,9 @@ import { Button, FormControl, Grid, Input, InputAdornment, InputLabel, OutlinedI
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
+import { DatePicker } from "@material-ui/pickers";
+import { DateTimePicker, KeyboardDateTimePicker , MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns'
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -207,7 +210,7 @@ export default function MiniDrawer() {
   const handleCloseUser = () => {
     setUserPage(false);
   };
-
+  const [selectedDate, handleDateChange] = React.useState(new Date("2018-01-01T00:00:00.000Z"));
 
  
 
@@ -387,6 +390,24 @@ export default function MiniDrawer() {
             size = "medium"
           />
         </FormControl>
+        </Grid>
+
+        <Grid item sm={12} md={12} xs={12}>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+       
+
+      <KeyboardDateTimePicker
+        variant="inline"
+        ampm={false}
+        label="date of birth"
+        value={selectedDate}
+        onChange={handleDateChange}
+        onError={console.log}
+        disablePast
+        format="yyyy/MM/dd HH:mm"
+      />
+        </MuiPickersUtilsProvider>
         </Grid>
         </Grid>
         </Box>
