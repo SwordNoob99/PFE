@@ -135,6 +135,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
        background: "#212F3D",
        color: "white",
+      cursor : "pointer"
     },
   },
 
@@ -382,7 +383,7 @@ boxShadow: 'none',
             : rows
           )?.map((row) => (
             <TableRow className={classes.tr} key={row.id}>
-              <a  style={{textDecoration : "none"}}>
+              <a  style={{textDecoration : "none" }}>
               <TableCell  onClick={() => handleSelectProject(row.id)} scope="row">
                 {row.projectName}
               </TableCell>

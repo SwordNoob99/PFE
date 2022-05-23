@@ -39,12 +39,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { makeStyles } from "@material-ui/core/styles";
 import { selectFirstProject } from '../features/projectSlice';
 import { Navigate } from "react-router";
-
+import "./Observations.css";
 
 
 
 export default function Observations(props) {
 
+
+  const func = () => {
+
+   
+  }
  
   
 
@@ -52,6 +57,8 @@ export default function Observations(props) {
 
     
  <Paper levitation = { 2}>
+
+   <Button variant='button'> click here</Button>
 
 
    <Grid container>
@@ -61,9 +68,10 @@ export default function Observations(props) {
         something
       </Grid>
 
-      <Grid Item sm={6} md={6}>
-
-        something
+      <Grid Item sm={6} md={12}>
+        <div className='firstdiv'>nav</div>
+        <div className='seconddiv'>content</div>
+       
       </Grid>
       </Box>
    </Grid>

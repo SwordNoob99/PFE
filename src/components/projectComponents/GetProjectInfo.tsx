@@ -35,6 +35,8 @@ import { State } from '@mui/system/cssVars/useCurrentColorScheme';
 import { makeStyles } from "@material-ui/core/styles";
 import { red } from '@material-ui/core/colors';
 
+import { selectFirstProject } from '../features/projectSlice';
+
 export default function GetProjectInfo() {
 
 
@@ -46,6 +48,18 @@ export default function GetProjectInfo() {
   const accessToken = select((state : any )=> state.userReducer.user.accessToken)
   const project_id =  select((state : any )=> state.projectReducer.fullProject.selectedProject.id)
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+
+  const [project , setProject] = useState<any[]>([]);
+
+  let temp  = useSelector((state : any)  => state.projectReducer.fullProject.selectedProject) ;
+  let isProjectSelected  = useSelector((state : any)  => state.projectReducer.fullProject.projectSelected) 
+
+
+  // GET SELECTED PROJECT FROM REDUX
+
+  let selectedProject = useSelector((state : any) => state.projectReducer.fullProject.selectedProject)
+
+  
   function  promise   ()  {
 
   
@@ -62,10 +76,10 @@ export default function GetProjectInfo() {
           'image_url' : formValues.image_url
         }).then ( result => {
 
-        
-          let selectedProject = result.data.project;
-         
-       
+          console.log(result.data.project)
+          const temp = result.data.project;
+          dispatch(addProject(temp))
+  
           
    
                       
@@ -80,21 +94,13 @@ export default function GetProjectInfo() {
      
         promise()
         
-       
+        
         
       }
 
 
  
-  const [project , setProject] = useState<any[]>([]);
 
-  let temp  = useSelector((state : any)  => state.projectReducer.fullProject.selectedProject) ;
-  let isProjectSelected  = useSelector((state : any)  => state.projectReducer.fullProject.projectSelected) 
-
-
-  // GET SELECTED PROJECT FROM REDUX
-
-  let selectedProject = useSelector((state : any) => state.projectReducer.fullProject.selectedProject)
   
   
 
@@ -147,7 +153,7 @@ const convertBase64 = (file) => {
 const handleFileRead = async (event) => {
   const file = event.target.files[0]
   setFormValues({ ...formValues ,
-    image_url : event.target.value
+    image_url : event.target.files[0]
   });
   const base64 = await convertBase64(file)
   setFormValues({ ...formValues ,
@@ -184,18 +190,7 @@ const documentRows = [
     Type : "pdf" ,
     Description : "This is a pdf document"
   } ,
-  {
-    id : 2 ,
-    docmentName : "second Document" ,
-    Type : "word",
-    Description : "This is a word document"
-  } ,
-  {
-    id : 3,
-    docmentName : "third Document" ,
-    Type : "excel" ,
-    Description : "This is an excel document"
-  } ,
+ 
 ]
 
 /// HANDLE COLLABORATORS ARRAY
@@ -208,15 +203,7 @@ const collaboratorsRows = [
     role : "Maitre d'ouvrage" ,
     email : "oussama.elyazami55@gmail.com" ,
     society : "mts"
-  } ,
-  {
-    id : 2 ,
-    name : "first Document" ,
-    role : "Maitre d'oeuvre" ,
-    email : "khalidboutlih@gmail.com",
-    society : "mts"
   } 
-
 ]
 
 // DOCUMENT TABLE 
@@ -261,6 +248,10 @@ const [openCollaborator , setOpenCollaborator] = useState(false)
 /// ADD lot de travaux STATE
 
 const [openLot , setOpenLot] = useState(false)
+
+/// ADD DOCUMENT 
+
+const [openAddDocument , setOpenAddDocument] = useState(true)
 
 
 
@@ -464,10 +455,13 @@ src= {formValues.image === '' || formValues.image === null || formValues.image =
 
           <Button
   variant="contained"
-  component="label" onClick={editProject}
+  component="label"
 >
-  Add 
-  
+  Upload Document
+  <Input onChange={(event) => handleFileRead(event)}
+    type="file"
+    hidden
+  ></Input>
 </Button>
 
         </Grid>
@@ -499,6 +493,11 @@ src= {formValues.image === '' || formValues.image === null || formValues.image =
   component="label" onClick={editProject}
 >
   Download
+
+  <input hidden type="file">
+
+ 
+  </input>
   
 </Button></StyledTableCell>
               
@@ -507,6 +506,20 @@ src= {formValues.image === '' || formValues.image === null || formValues.image =
           ))}
         </TableBody>
       </Table>
+
+      <Dialog maxWidth="md"  >
+                  <DialogTitle>
+                    ajouter un collaborateur
+                  </DialogTitle>
+   
+        <DialogContent>
+    
+
+      
+          
+        </DialogContent>
+      
+      </Dialog>
     </TableContainer>
 
 

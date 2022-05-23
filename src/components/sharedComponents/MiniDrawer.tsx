@@ -41,9 +41,11 @@ import Store from "../../store/Store.js"
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import storage from "redux-persist/lib/storage";
-
-
-
+import { remove } from '../features/userProjectsSlice';
+import { Button, FormControl, Grid, Input, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -53,6 +55,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const drawerWidth = 240;
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -133,6 +144,7 @@ export default function MiniDrawer() {
   const dispatch = useDispatch();
   const [temp , setTemp] = React.useState(true);
   const justLoggedin = useSelector((state : any ) => state.userReducer.justLoggedIn)
+  const user = useSelector((state : any) => state.userReducer.user.user)
 
   React.useEffect(() => {
       setTimeout(() => {
@@ -159,6 +171,7 @@ export default function MiniDrawer() {
     setTimeout(() => {
 
       dispatch(logout ())
+      dispatch(remove ())
       
     }, 2000);
     
@@ -184,6 +197,16 @@ export default function MiniDrawer() {
 
 
   const [ loading , setLoading] = React.useState(false);
+
+  const [userPage , setUserPage] = React.useState(false);
+
+  const handleClickOpenUsr = () => {
+    setUserPage(true);
+  };
+
+  const handleCloseUser = () => {
+    setUserPage(false);
+  };
 
 
  
@@ -214,7 +237,16 @@ export default function MiniDrawer() {
   
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+      <Grid
+  container
+  direction="row"
+  justifyContent="space-between"
+  alignItems="center"
+>
+
+  <Grid item>
+
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -230,7 +262,197 @@ export default function MiniDrawer() {
           <Typography variant="h6" noWrap component="div">
             MTS Group Construction Management
           </Typography>
+       
+          
+          
         </Toolbar>
+
+        </Grid>
+
+        <Grid item sx={{marginRight:2 }}>
+
+        <div className='user-button' onClick={handleClickOpenUsr}>
+
+          <AccountCircleIcon/>
+          
+          {user.email}
+          
+        </div>
+
+        <Dialog
+        fullScreen
+        open={userPage}
+        onClose={handleCloseUser}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleCloseUser}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Add a user
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleCloseUser}>
+              save
+            </Button>
+          </Toolbar>
+        </AppBar>
+
+        <Grid  container sm={12} md={12} xs={12} justify="flex-end" >
+      
+      <Grid item md={6} xs={12} sm={12}> 
+   
+      <Box  sx={{ width: '100%' , p:4 , mt:10 }}>
+
+        <Grid spacing={4} container sm={12} md={12} xs={12} justify="flex-end">
+
+          <Grid item sm={12} md={12} xs={12}>
+          <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">First Name</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+       
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="name"
+            size = "medium"
+          />
+        </FormControl>
+      </Grid>
+      <Grid item sm={12} md={12} xs={12}>
+      <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Last Name</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+         
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="description"
+            size = "medium"
+          />
+        </FormControl>
+        </Grid>
+
+        <Grid item sm={12} md={12} xs={12}>
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">City</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+           
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="description"
+            size = "medium"
+          />
+        </FormControl>
+        </Grid>
+
+        <Grid item sm={12} md={12} xs={12}>
+      <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">zip</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+           
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="description"
+            size = "medium"
+          />
+        </FormControl>
+        </Grid>
+
+        <Grid item sm={12} md={12} xs={12}>
+      <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Addresse</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+           
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="description"
+            size = "medium"
+          />
+        </FormControl>
+        </Grid>
+
+        <Grid item sm={12} md={12} xs={12}>
+      <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Tel</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+           
+            startAdornment={<InputAdornment position="start"></InputAdornment>}
+            label="description"
+            size = "medium"
+          />
+        </FormControl>
+        </Grid>
+        </Grid>
+        </Box>
+    
+    </Grid>
+
+    <Grid item md={6} xs={12} sm={12}>  
+
+    <Box  sx={{ width: '100%' , p:4 , mt:10 }}>
+
+<Grid spacing={4} container sm={12} md={12} xs={12} justify="flex-end">
+
+<Grid container justifyContent="center" item md={12} xs={12} sm={12}>
+    
+
+    <Button
+variant="contained"
+component="label"
+>
+Upload Image
+<Input onChange={(event) => handleFileRead(event)}
+type="file"
+hidden
+></Input>
+</Button></Grid>
+
+<Grid container justifyContent="center" item md={12} sm={12} xs={12}>
+
+   
+
+<Box
+component="img"
+sx={{
+  m : 2,
+  height : 200 ,
+  width : {
+    sm : 320 ,
+    md : 140 ,
+    lg : 200 ,
+    xs : 250 ,
+  
+  } ,
+  borderRadius : 5 ,
+  borderColor : 'black' ,
+  borderSpacing : 5 ,
+  border : 1
+}}
+alt="Project Image"
+src= { "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png"   }
+/>
+        
+    
+     </Grid>
+        </Grid>
+        </Box>
+        
+
+    
+     </Grid>
+    </Grid>
+        
+      </Dialog>
+
+</Grid>
+        </Grid>
+       
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>

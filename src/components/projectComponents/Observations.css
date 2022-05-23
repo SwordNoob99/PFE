@@ -1,0 +1,15 @@
+.firstdiv{
+
+    background-color: black;
+    width: 100%;
+    position: fixed;
+
+
+}
+
+.seconddiv{
+
+    position: fixed;
+  
+    background-color: white;
+}

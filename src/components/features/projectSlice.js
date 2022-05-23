@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice , PayloadAction } from "@reduxjs/toolkit";
 
 export const projectSlice = createSlice({
 
@@ -11,20 +11,25 @@ export const projectSlice = createSlice({
             meetings : null ,
             remarks : null ,
             observations : null,
-            projectSelected : false
+            projectSelected : null,
+           
 
         }
        
     },
     reducers : {
-        addProject : (state , action : any ) => {
+        addProject : (state , action  ) => {
 
             state.fullProject.selectedProject = action.payload
+            
+        
         
         },
-        selectFirstProject : (state , action : any) => {
+        selectFirstProject : (state , action  ) => {
 
-            state.fullproject.projectSelected = action.payload
+            state.fullProject.projectSelected = action.payload
+
+      
 
         }
     }
@@ -32,7 +37,7 @@ export const projectSlice = createSlice({
 
 
 export const {  selectFirstProject } = projectSlice.actions;
-export const { addProject } = projectSlice.actions;
+export const { addProject }  = projectSlice.actions ;
 export const selectFullProject = (state) => state.project.fullProject;
 
 
