@@ -299,7 +299,7 @@ export default function MiniDrawer() {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Add a user
+              Page d'utilisateur
             </Typography>
             <Button autoFocus color="inherit" onClick={handleCloseUser}>
               save
@@ -404,7 +404,7 @@ export default function MiniDrawer() {
         value={selectedDate}
         onChange={handleDateChange}
         onError={console.log}
-        disablePast
+     
         format="yyyy/MM/dd HH:mm"
       />
         </MuiPickersUtilsProvider>

@@ -26,6 +26,21 @@ import RegisterDialogForm from "./components/accessComponents/Register"
 import Forgot from './components/accessComponents/Forgot';
 import Observations from "./components/projectComponents/Observations"
 import Meetings from './components/projectComponents/Meetings';
+import Remarques from './components/projectComponents/Remarque'
+import Planning from './components/projectComponents/Planning';
+import Plan from './components/projectComponents/Plan';
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function App() {
@@ -65,7 +80,7 @@ function App() {
           <Route index  element= { < TableProjects  />} > </Route>
             <Route  path='projects' element= { < TableProjects />} > </Route>
             <Route  path='observations' element= { < Observations />} > </Route>
-            
+            <Route  path='remarques' element= { < Remarques />} > </Route>
          
        
 
@@ -78,7 +93,8 @@ function App() {
             <Route path="*" element={<Navigate to="projects" replace />} />
 
             <Route path='meetings' element = { <Meetings />}></Route>
-                  
+            <Route path='planning' element = { <Planning />}></Route>
+            <Route path='plans' element = { <Plan />}></Route>
            
                   
                    

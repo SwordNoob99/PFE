@@ -13,3 +13,37 @@
   
     background-color: white;
 }
+
+
+.add-icon {
+
+    transform: scale(1.8);
+    color : #2074d4;
+    margin-left: 20px;
+    margin-top : 20px;
+    margin-right: 20px;
+
+}
+
+.add-icon:hover {
+
+    cursor: pointer;
+    color : #0a4a94
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+
+    font-size: 100px;
+}
+
+.photo {
+
+    transform: scale(1.8);
+    color : #2074d4;
+    margin-bottom: 10px;
+}
+

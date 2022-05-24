@@ -21,7 +21,7 @@ export const SidebarData = [
 } ,
 {
     title : 'Plans' ,
-    path : '/reports',
+    path : '/plans',
     icon : <IoDocumentsSharp size={20}/> ,
     cName : 'nav-text'
 
@@ -29,7 +29,7 @@ export const SidebarData = [
 } ,
 {
     title : 'Planning' ,
-    path : '/projects',
+    path : '/planning',
     icon : <AIcons.AiOutlineSchedule size={20} /> ,
     cName : 'nav-text'
 
@@ -52,8 +52,8 @@ export const SidebarData = [
 
 },
 {
-    title : 'Remarks' ,
-    path : '/',
+    title : 'Remarques' ,
+    path : '/remarques',
     icon : <IoBulbOutline size={20} /> ,
     cName : 'nav-text'
 

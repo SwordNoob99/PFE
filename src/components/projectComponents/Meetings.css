@@ -10,3 +10,26 @@
     padding-top: 10px;;
 
 }
+
+.add-icon {
+
+    transform: scale(1.8);
+    color : #2074d4
+
+}
+
+.add-icon:hover {
+
+    cursor: pointer;
+    color : #0a4a94
+}
+
+a {
+    text-decoration: none;
+}
+
+.add-icons{
+
+    color : #2074d4;
+    transform: scale(1.5);
+  }

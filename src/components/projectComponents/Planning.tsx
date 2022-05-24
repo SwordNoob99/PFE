@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Meetings(props) {
+export default function Plan(props) {
 
   const addMeeting = () => {
 
@@ -107,7 +107,20 @@ export default function Meetings(props) {
   const classes = useStyles();
   const [qrCode , setQrCode] = useState((state : string) => "");
   const [isSomething , setIsSomething]   = useState(false) ;
-  const [rows , setRows] = useState([]);
+  const [rows , setRows] = useState([
+
+    {
+
+      "id" : 1,
+      "zoneName" : "Non classifiée"
+    },
+    {
+
+      "id" : 2,
+      "zoneName" : "Zone 1"
+    },
+    
+  ]);
 
   const handleChange = () => {
 
@@ -140,7 +153,7 @@ export default function Meetings(props) {
     <Box sx={{ width: '100%' , p:1  }}>
     <Paper    elevation={7}>
     <Typography align='center' variant="h4" component="div" gutterBottom>
-        Meetings
+        Planning
       </Typography>
 
       </Paper>
@@ -159,21 +172,29 @@ export default function Meetings(props) {
 }} >
 
 <div className="tableBanner">
-Meeting Dates
+Evenement
 </div>
 <Table  aria-label="custom pagination table">
         <TableBody>
-          {rows?.map((row) => (
-            <TableRow  className={classes.tr} key={row.id}>
+          
+        <TableRow  className={classes.tr}>
               <a  style={{textDecoration : "none" }}>
-              <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-                {row.meetingDate}
+              <TableCell   scope="row">
+                <h5>1 Evenement sans titre</h5>
+                <p>lin : 23/05/2022 <br/> Tous corps d'etat</p>
               </TableCell>
              
               </a>
             </TableRow>
-          ))}
-         
+            <TableRow  className={classes.tr}>
+              <a  style={{textDecoration : "none" }}>
+              <TableCell   scope="row">
+                <h5>2 Evenement sans titre</h5>
+                <p>lin : 19/05/2022 <br/> Tous corps d'etat</p>
+              </TableCell>
+             
+              </a>
+            </TableRow>
         </TableBody></Table> 
 </Paper>
 </Grid>
@@ -186,7 +207,7 @@ Meeting Dates
     justifyContent="center">
 
 <div className="tableBanner">
-Meeting 
+Planes
 </div>
 <Paper elevation={2}>
 <Box sx={{ width: '100%' }}>
@@ -194,37 +215,17 @@ Meeting
    
    <Box  sx={{ width: '100%' , p:4  }}>
 
-     <Grid spacing={4} container sm={12} md={12} xs={12} justify="flex-end">
-
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
+   <Grid spacing={2} container  direction="row"
   justifyContent="flex-end"
-  alignItems="center">
+  alignItems="center" sm={12} md={12} xs={12} sx={{mb:4}} >
 
-            <a onClick={addMeeting}>
-          <AddCircleIcon className='add-icon' fontSize='large'/>
-          </a>
-       
-   </Grid>
+   <AddCircleIcon sx={{color : "#2074d4"}} className='add-icons' fontSize='large'/>
+</Grid>
+   
+   <Grid spacing={2} container sm={12} md={12} xs={12} >
 
-       <Grid item sm={12} md={12} xs={12} sx={{ m: 1 }}>
-       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-       
-
-      <KeyboardDateTimePicker
-        variant="inline"
-        ampm={false}
-        label="Meeting Date"
-            color="primary"
-        onError={console.log}
-            value = {selectedMeeting?.meetingDate}
-        format="yyyy/MM/dd"
-      />
-       </MuiPickersUtilsProvider>
-   </Grid>
-   <Grid item sm={12} md={6} xs={12}>
-   <FormControl fullWidth sx={{ m: 1 }}>
-       <InputLabel htmlFor="outlined-adornment-amount">meeting Objectif</InputLabel>
+   <FormControl fullWidth sx={{ mt: 5 }}>
+       <InputLabel htmlFor="outlined-adornment-amount">Description</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
 
@@ -233,35 +234,24 @@ Meeting
          size = "medium"
        />
      </FormControl>
-     </Grid>
+   </Grid>
+   <Grid spacing={2} container sm={12} md={12} xs={12} >
 
-     <Grid item sm={12} md={6} xs={12}>
-     <FormControl fullWidth sx={{ m: 1  }}>
-       <InputLabel htmlFor="outlined-adornment-amount">Notes</InputLabel>
-       <OutlinedInput
-         id="outlined-adornment-amount"
-  
-         startAdornment={<InputAdornment position="start"></InputAdornment>}
-         label="Notes"
-         size = "medium"
-      
-       />
-     </FormControl>
-     </Grid>
+<FormControl fullWidth sx={{ mt: 5 }}>
+    <InputLabel htmlFor="outlined-adornment-amount">Catégorie</InputLabel>
+    <OutlinedInput
+      id="outlined-adornment-amount"
 
-     
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-     <Button>
-       Zone de la visite
-     </Button>
-     </Grid>
+      startAdornment={<InputAdornment position="start"></InputAdornment>}
+      label="meeting Objectif"
+      size = "medium"
+    />
+  </FormControl>
+</Grid>
+<Grid spacing={2} container sm={12} md={12} xs={12} >
 
-     <Grid item sm={12} md={6} xs={12}>
-     <FormControl fullWidth sx={{ m: 1  }}>
-  <InputLabel id="demo-simple-select-label"> phase de la visite</InputLabel>
+<FormControl fullWidth sx={{ mt: 5 }}>
+<InputLabel id="demo-simple-select-label"> concerne</InputLabel>
   <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"
@@ -269,88 +259,53 @@ Meeting
     label="phase de la visite"
     onChange={handleChange}
   >
-    <MenuItem value={1}>Suivi de chantier</MenuItem>
-    <MenuItem value={2}>Pré-cloisons</MenuItem>
-    <MenuItem value={4}>Cloisons</MenuItem>
-    <MenuItem value={5}>Pré-livraison</MenuItem>
-    <MenuItem value={3}>OPR</MenuItem>
-    <MenuItem value={6}>Réception</MenuItem>
-    <MenuItem value={7}>Livraison</MenuItem>
-    <MenuItem value={8}>30 Jours</MenuItem>
-    <MenuItem value={9}>GPA</MenuItem>
-    <MenuItem value={10}>Biennale</MenuItem>
-    <MenuItem value={11}>Décennale</MenuItem>
+    <MenuItem value={1}>Tous corps d'état</MenuItem>
+
+ 
 
   </Select>
-</FormControl>
-     </Grid>
+  </FormControl>
+  <FormControl fullWidth sx={{ mt: 5 }}>
+ 
+                           
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+       
 
-     
-
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-    <ICalendarLink event={event}>
-     <Button sx={{width : {
-
-md : 1000 ,
-
-}}}>
+       <KeyboardDateTimePicker
+         variant="inline"
+         ampm={false}
+         label="date de debut"
+             color="primary"
+         onError={console.log}
       
-    
-     Add to calendar 
-     </Button>
-     </ICalendarLink>
-     </Paper>
-     </Grid>
+         format="yyyy/MM/dd"
+      
+         
+       />
+        </MuiPickersUtilsProvider>
+        </FormControl>
+
+        <FormControl fullWidth sx={{ mt: 5 }}>
+ 
+                           
+ <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
 
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button sx={{width : {
+<KeyboardDateTimePicker
+variant="inline"
+ampm={false}
+label="date de fin"
+color="primary"
+onError={console.log}
 
-       md : 1000 ,
+format="yyyy/MM/dd"
 
-     }}}>
-       Observations
-     </Button>
-     </Paper>
-     </Grid>
 
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button sx={{width : {
+/>
+</MuiPickersUtilsProvider>
+</FormControl>
 
-       md : 1000 ,
-
-     }}}>
-       Remarques
-     </Button>
-     </Paper>
-     </Grid>
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button variant="contained" sx={{width : {
-
-       md : 1000 ,
-
-     }}}>
-       Enregistrer
-     </Button>
-     </Paper>
-     </Grid>
-     <Grid item sm={12} md={12} xs={12}  container
+<Grid sx={{mt:5}} item sm={12} md={12} xs={12}  container
   direction="row"
   justifyContent="center"
   alignItems="center">
@@ -360,11 +315,14 @@ md : 1000 ,
        md : 1000 ,
 
      }}}>
-       Supprimer la visite
+       Supprimer le planning
      </Button>
-     </Paper>
-     </Grid>
-     </Grid>
+     </Paper></Grid>
+</Grid>
+
+
+
+
      </Box>
  
    </Grid>

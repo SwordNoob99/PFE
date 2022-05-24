@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Meetings(props) {
+export default function Plan(props) {
 
   const addMeeting = () => {
 
@@ -107,7 +107,20 @@ export default function Meetings(props) {
   const classes = useStyles();
   const [qrCode , setQrCode] = useState((state : string) => "");
   const [isSomething , setIsSomething]   = useState(false) ;
-  const [rows , setRows] = useState([]);
+  const [rows , setRows] = useState([
+
+    {
+
+      "id" : 1,
+      "zoneName" : "Non classifiée"
+    },
+    {
+
+      "id" : 2,
+      "zoneName" : "Zone 1"
+    },
+    
+  ]);
 
   const handleChange = () => {
 
@@ -140,7 +153,7 @@ export default function Meetings(props) {
     <Box sx={{ width: '100%' , p:1  }}>
     <Paper    elevation={7}>
     <Typography align='center' variant="h4" component="div" gutterBottom>
-        Meetings
+        Plans
       </Typography>
 
       </Paper>
@@ -159,15 +172,16 @@ export default function Meetings(props) {
 }} >
 
 <div className="tableBanner">
-Meeting Dates
+Zones
 </div>
 <Table  aria-label="custom pagination table">
         <TableBody>
+          
           {rows?.map((row) => (
             <TableRow  className={classes.tr} key={row.id}>
               <a  style={{textDecoration : "none" }}>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-                {row.meetingDate}
+                {row.zoneName}
               </TableCell>
              
               </a>
@@ -186,7 +200,7 @@ Meeting Dates
     justifyContent="center">
 
 <div className="tableBanner">
-Meeting 
+Planes
 </div>
 <Paper elevation={2}>
 <Box sx={{ width: '100%' }}>
@@ -194,37 +208,17 @@ Meeting
    
    <Box  sx={{ width: '100%' , p:4  }}>
 
-     <Grid spacing={4} container sm={12} md={12} xs={12} justify="flex-end">
-
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
+   <Grid spacing={2} container  direction="row"
   justifyContent="flex-end"
-  alignItems="center">
+  alignItems="center" sm={12} md={12} xs={12} sx={{mb:4}} >
 
-            <a onClick={addMeeting}>
-          <AddCircleIcon className='add-icon' fontSize='large'/>
-          </a>
-       
-   </Grid>
+   <AddCircleIcon sx={{color : "#2074d4"}} className='add-icons' fontSize='large'/>
+</Grid>
 
-       <Grid item sm={12} md={12} xs={12} sx={{ m: 1 }}>
-       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-       
+   <Grid spacing={2} container sm={12} md={12} xs={12} >
 
-      <KeyboardDateTimePicker
-        variant="inline"
-        ampm={false}
-        label="Meeting Date"
-            color="primary"
-        onError={console.log}
-            value = {selectedMeeting?.meetingDate}
-        format="yyyy/MM/dd"
-      />
-       </MuiPickersUtilsProvider>
-   </Grid>
-   <Grid item sm={12} md={6} xs={12}>
-   <FormControl fullWidth sx={{ m: 1 }}>
-       <InputLabel htmlFor="outlined-adornment-amount">meeting Objectif</InputLabel>
+   <FormControl fullWidth sx={{ mt: 5 }}>
+       <InputLabel htmlFor="outlined-adornment-amount">Nom DE LA ZONE</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
 
@@ -233,137 +227,104 @@ Meeting
          size = "medium"
        />
      </FormControl>
-     </Grid>
+   </Grid>
 
-     <Grid item sm={12} md={6} xs={12}>
-     <FormControl fullWidth sx={{ m: 1  }}>
-       <InputLabel htmlFor="outlined-adornment-amount">Notes</InputLabel>
-       <OutlinedInput
-         id="outlined-adornment-amount"
-  
-         startAdornment={<InputAdornment position="start"></InputAdornment>}
-         label="Notes"
-         size = "medium"
-      
-       />
-     </FormControl>
-     </Grid>
+     <Grid sx={{mt:4 , mb:4}} spacing={2} container sm={12} md={12} xs={12} justify="flex-end">
 
-     
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-     <Button>
-       Zone de la visite
-     </Button>
-     </Grid>
 
-     <Grid item sm={12} md={6} xs={12}>
-     <FormControl fullWidth sx={{ m: 1  }}>
-  <InputLabel id="demo-simple-select-label"> phase de la visite</InputLabel>
-  <Select 
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-            value = {selectedMeeting?.phase}
-    label="phase de la visite"
-    onChange={handleChange}
-  >
-    <MenuItem value={1}>Suivi de chantier</MenuItem>
-    <MenuItem value={2}>Pré-cloisons</MenuItem>
-    <MenuItem value={4}>Cloisons</MenuItem>
-    <MenuItem value={5}>Pré-livraison</MenuItem>
-    <MenuItem value={3}>OPR</MenuItem>
-    <MenuItem value={6}>Réception</MenuItem>
-    <MenuItem value={7}>Livraison</MenuItem>
-    <MenuItem value={8}>30 Jours</MenuItem>
-    <MenuItem value={9}>GPA</MenuItem>
-    <MenuItem value={10}>Biennale</MenuItem>
-    <MenuItem value={11}>Décennale</MenuItem>
 
-  </Select>
-</FormControl>
-     </Grid>
+     <Table   aria-label="custom pagination table">
+        <TableBody className="table" >
+        <TableRow   >
+              
+              <TableCell   scope="row">
+              <h5>Plans</h5>
+              </TableCell>
+              <TableCell sx={{textAlign: "right"}}   scope="row">
+              <AddCircleIcon className='add-icon' fontSize='large'/>
+              </TableCell>
+            
 
-     
-
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-    <ICalendarLink event={event}>
-     <Button sx={{width : {
-
-md : 1000 ,
-
-}}}>
-      
+            
     
-     Add to calendar 
-     </Button>
-     </ICalendarLink>
-     </Paper>
-     </Grid>
+              </TableRow >
+      
+        <TableRow  sx={{bgcolor: "rgb(219, 210, 210)" }} >
+              
+              <TableCell   scope="row">
+              Nom du fichier
+              </TableCell>
+
+              <TableCell   scope="row">
+              Version
+              </TableCell>
+    
+              </TableRow >
+
+              <TableRow  >
+              
+              <TableCell sx={{textAlign:"center" , borderBottom : "1px solid black"}} colSpan={2}  scope="row">
+              Cette zone n'a aucun plan , cliquez sur le bouton + pour importer un pan dans cette zone
+              </TableCell>
+              
+              </TableRow>
+        
+           
+         
+        </TableBody></Table> 
 
 
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button sx={{width : {
+        <Table   aria-label="custom pagination table">
+        <TableBody className="table" >
+        <TableRow   >
+              
+              <TableCell   scope="row">
+              <h5>Documents</h5>
+              </TableCell>
+              <TableCell sx={{textAlign: "right"}}   scope="row">
+            
+              </TableCell>
+              <TableCell sx={{textAlign: "right"}}   scope="row">
+            
+            </TableCell>
+            <TableCell sx={{textAlign: "right"}}   scope="row">
+            <AddCircleIcon className='add-icon' fontSize='large'/>
+            </TableCell>
 
-       md : 1000 ,
+            
+    
+              </TableRow >
+      
+        <TableRow  sx={{bgcolor: "rgb(219, 210, 210)" }} >
+              
+              <TableCell   scope="row">
+              Nom du fichier
+              </TableCell>
 
-     }}}>
-       Observations
-     </Button>
-     </Paper>
-     </Grid>
+              <TableCell   scope="row">
+              Taille
+              </TableCell>
+              <TableCell   scope="row">
+              téléchargé
+              </TableCell>
+              <TableCell   scope="row">
+              synchronizer
+              </TableCell>
 
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button sx={{width : {
+              </TableRow >
 
-       md : 1000 ,
+              <TableRow  >
+              
+              <TableCell sx={{textAlign:"center" , borderBottom : "1px solid black"}} colSpan={4}  scope="row">
+              Cliquez sur le bouton + pour importer un document.
+              </TableCell>
+              
+              </TableRow>
+        
+           
+         
+        </TableBody></Table> 
 
-     }}}>
-       Remarques
-     </Button>
-     </Paper>
-     </Grid>
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button variant="contained" sx={{width : {
-
-       md : 1000 ,
-
-     }}}>
-       Enregistrer
-     </Button>
-     </Paper>
-     </Grid>
-     <Grid item sm={12} md={12} xs={12}  container
-  direction="row"
-  justifyContent="center"
-  alignItems="center">
-    <Paper elevation={2}>
-     <Button variant="outlined" color="error" sx={{width : {
-
-       md : 1000 ,
-
-     }}}>
-       Supprimer la visite
-     </Button>
-     </Paper>
-     </Grid>
      </Grid>
      </Box>
  

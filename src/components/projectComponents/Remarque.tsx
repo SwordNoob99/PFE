@@ -51,9 +51,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-
-
-
 const useStyles = makeStyles(theme => ({
 
   tr: {
@@ -71,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-export default function Observations(props) {
+export default function Remarques(props) {
 
   const [rows , setRows] = useState([
 
@@ -293,7 +290,7 @@ md : 800 ,
   alignItems="center">
 
 <DeleteIcon className='add-icon'/>
-<Typography fontSize={30} className="title">Observations</Typography>
+<Typography fontSize={30} className="title">Remarques</Typography>
 <AddCircleIcon className='add-icon' fontSize='large'/>
 
 
