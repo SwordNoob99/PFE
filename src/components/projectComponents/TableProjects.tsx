@@ -257,7 +257,7 @@ export default function CustomPaginationActionsTable(props) {
   useEffect(()=>{
 
         // GET NEW PROJECTS ARRAY
-
+        setLoading(true)
         axios.get(`http://127.0.0.1:8000/api/v1/projectUser/`+user_id ).then(
           res => {
              
@@ -274,7 +274,10 @@ export default function CustomPaginationActionsTable(props) {
           },
       ).catch(error => {
         console.log(error)
-      } )
+      } ).finally( () => 
+
+        setLoading(false)
+      )
 
 
        
@@ -382,7 +385,7 @@ boxShadow: 'none',
             ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           )?.map((row) => (
-            <TableRow className={classes.tr} key={row.id}>
+            <TableRow className={classes.tr} key={row.id} onClick={() => handleSelectProject(row.id)} >
               <a  style={{textDecoration : "none" }}>
               <TableCell  onClick={() => handleSelectProject(row.id)} scope="row">
                 {row.projectName}

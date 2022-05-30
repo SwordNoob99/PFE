@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import { parseISO } from 'date-fns';
 import Grid from '@mui/material/Grid';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -23,15 +23,21 @@ import Button from '@mui/material/Button';
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import { DateTimePicker, KeyboardDateTimePicker , MuiPickersUtilsProvider} from "@material-ui/pickers";
+import { DatePicker, DateTimePicker, KeyboardDateTimePicker , MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns'
 import "./Meetings.css";
 
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+
+import Menu from "@material-ui/core/Menu";
+
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import moment from 'moment';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+
 
 const useStyles = makeStyles(theme => ({
 
@@ -53,24 +59,84 @@ const useStyles = makeStyles(theme => ({
 
 export default function Meetings(props) {
 
+  useEffect(() => {
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getMeeting`, {
+      'projectId' : projectid ,
+      
+
+     
+    
+    }).then ( result => {
+     
+      setRows(result.data.data)
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+  } , [])
+
+  const handleSelectedMeetingChange =
+  (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    console.log(event.target.value)
+    setSelectedMeeting({ ...selectedMeeting, [prop]: event.target.value });
+    
+  };
+
+  const select = useSelector
+  const [projectid , setProjectId] = useState(useSelector((state) => state.projectReducer.fullProject.selectedProject.id));
+  const accessToken = select((state : any )=> state.userReducer.user.accessToken)
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
   const addMeeting = () => {
 
     
 
     let date = moment(new Date()).format("YYYY/MM/DD")
-    let meeting = {
-      "id" : 9,
-      "meetingName" : "test9" ,
-      "meetingDate" : date ,
-      "Obj" : "objectif 9" ,
-      "note" : "note 9 ",
-      "phase" : "phase 9"
-    }
 
-    const newRows = [...rows];
-    newRows.push(meeting);
-    setRows(newRows);
-    setSelectedMeeting(meeting)
+
+    axios.post(`http://127.0.0.1:8000/api/v1/meeting`, {
+      'projectId' : projectid ,
+      'date' : date ,
+
+     
+    
+    }).then ( result => {
+     
+  
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getMeeting`, {
+      'projectId' : projectid ,
+      
+
+     
+    
+    }).then ( result => {
+     
+      setRows(result.data.data)
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+    
+
   }
   const handleClickTable = (rowId) => {
 
@@ -80,17 +146,11 @@ export default function Meetings(props) {
     })
 
     setSelectedMeeting(temp)
+    setDate(temp.date)
 
 }
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+ 
 
   const event = {
     title: "My Title",
@@ -114,18 +174,133 @@ export default function Meetings(props) {
     setIsSomething(!isSomething)
   }
 
-  const [selectedMeeting , setSelectedMeeting] = useState();
+  const [selectedMeeting , setSelectedMeeting] = useState({
+    id : "",
+    date : "",
+    phase : "",
+    object : "",
+    note : ""
+  });
 
-  React.useLayoutEffect  (() => {
-    let temp = []
-      if (rows){
-        temp = rows[0]
-      }
 
-      setSelectedMeeting(temp)
 
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = e => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const nativeOnChange = e => {
+    const detail = {
+      selectedIndex: e.target.selectedIndex
+    };
+    e.target.selectedIndex = 0;
+
+    e.target.dispatchEvent(new CustomEvent("itemClick", { detail }));
+  };
+
+  // save meeting 
+
+  const save = () => {
       
-  } , [])
+    axios.post(`http://127.0.0.1:8000/api/v1/updateMeeting`, {
+      'projectId' : projectid ,
+      'date' : date ,
+      'id' : selectedMeeting.id ,
+      'phase' : selectedMeeting.phase ,
+      'object' : selectedMeeting.object ,
+      'note' : selectedMeeting.note ,
+
+     
+    
+    }).then ( result => {
+     
+  
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getMeeting`, {
+      'projectId' : projectid ,
+      
+
+     
+    
+    }).then ( result => {
+     
+      setRows(result.data.data)
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+  }
+
+  //delete meeting 
+ const deleteMeeting = () => {
+
+  
+      
+    axios.post(`http://127.0.0.1:8000/api/v1/deleteMeeting`, {
+      'projectId' : projectid ,
+      'date' : date ,
+      'id' : selectedMeeting.id ,
+      'phase' : selectedMeeting.phase ,
+      'object' : selectedMeeting.object ,
+      'note' : selectedMeeting.note ,
+
+     
+    
+    }).then ( result => {
+     
+  
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getMeeting`, {
+      'projectId' : projectid ,
+      
+
+     
+    
+    }).then ( result => {
+     
+      setRows(result.data.data)
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+  
+ }
+
+
+  // date
+
+  const [date , setDate] = useState("")
+
 
  
 
@@ -167,7 +342,7 @@ Meeting Dates
             <TableRow  className={classes.tr} key={row.id}>
               <a  style={{textDecoration : "none" }}>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-                {row.meetingDate}
+               <h6> {row.date} </h6> <br/> {row.object}
               </TableCell>
              
               </a>
@@ -208,26 +383,29 @@ Meeting
    </Grid>
 
        <Grid item sm={12} md={12} xs={12} sx={{ m: 1 }}>
-       <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      
        
 
-      <KeyboardDateTimePicker
-        variant="inline"
-        ampm={false}
-        label="Meeting Date"
-            color="primary"
-        onError={console.log}
-            value = {selectedMeeting?.meetingDate}
-        format="yyyy/MM/dd"
-      />
-       </MuiPickersUtilsProvider>
+       <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+<DatePicker
+       views={["year", "month" , "day"]}
+       label="date"
+     
+       format={'yyyy/MM/dd'}
+ 
+       value={date}
+       onChange={setDate}
+     />
+</MuiPickersUtilsProvider>
    </Grid>
    <Grid item sm={12} md={6} xs={12}>
    <FormControl fullWidth sx={{ m: 1 }}>
        <InputLabel htmlFor="outlined-adornment-amount">meeting Objectif</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
-
+         value = {selectedMeeting?.object}
+         onChange = {handleSelectedMeetingChange("object")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
          label="meeting Objectif"
          size = "medium"
@@ -240,7 +418,8 @@ Meeting
        <InputLabel htmlFor="outlined-adornment-amount">Notes</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
-  
+         value = {selectedMeeting?.note}
+         onChange = {handleSelectedMeetingChange("note")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
          label="Notes"
          size = "medium"
@@ -267,7 +446,7 @@ Meeting
     id="demo-simple-select"
             value = {selectedMeeting?.phase}
     label="phase de la visite"
-    onChange={handleChange}
+    onChange = {handleSelectedMeetingChange("phase")}
   >
     <MenuItem value={1}>Suivi de chantier</MenuItem>
     <MenuItem value={2}>Pré-cloisons</MenuItem>
@@ -341,7 +520,7 @@ md : 1000 ,
   justifyContent="center"
   alignItems="center">
     <Paper elevation={2}>
-     <Button variant="contained" sx={{width : {
+     <Button onClick={save} variant="contained" sx={{width : {
 
        md : 1000 ,
 
@@ -355,7 +534,7 @@ md : 1000 ,
   justifyContent="center"
   alignItems="center">
     <Paper elevation={2}>
-     <Button variant="outlined" color="error" sx={{width : {
+     <Button onClick={deleteMeeting} variant="outlined" color="error" sx={{width : {
 
        md : 1000 ,
 

@@ -27,7 +27,7 @@ import './MiniDrawer.css';
 import Login from '../accessComponents/Login';
 import { logout } from '../features/userSlice';
 import { Navigator } from 'react-router-dom';
-
+import { removeProject } from '../features/projectSlice';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import {  justLogged} from '../features/userSlice';
@@ -175,6 +175,7 @@ export default function MiniDrawer() {
 
       dispatch(logout ())
       dispatch(remove ())
+      dispatch(removeProject ())
       
     }, 2000);
     

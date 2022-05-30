@@ -31,6 +31,11 @@ export const projectSlice = createSlice({
 
       
 
+        },
+
+        removeProject : (state) => {
+
+            state.fullProject.selectedProject = null
         }
     }
 })
@@ -38,6 +43,7 @@ export const projectSlice = createSlice({
 
 export const {  selectFirstProject } = projectSlice.actions;
 export const { addProject }  = projectSlice.actions ;
+export const { removeProject }  = projectSlice.actions ;
 export const selectFullProject = (state) => state.project.fullProject;
 
 

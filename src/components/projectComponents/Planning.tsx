@@ -13,7 +13,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { FormControl, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, FormControl, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
 
 import ICalendarLink from "react-icalendar-link";
 
@@ -32,7 +32,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import moment from 'moment';
-
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { DatePicker } from '@material-ui/pickers';
+import { fontWeight } from '@mui/system';
 const useStyles = makeStyles(theme => ({
 
   tr: {
@@ -52,6 +55,7 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function Plan(props) {
+
 
   const addMeeting = () => {
 
@@ -107,20 +111,7 @@ export default function Plan(props) {
   const classes = useStyles();
   const [qrCode , setQrCode] = useState((state : string) => "");
   const [isSomething , setIsSomething]   = useState(false) ;
-  const [rows , setRows] = useState([
-
-    {
-
-      "id" : 1,
-      "zoneName" : "Non classifiée"
-    },
-    {
-
-      "id" : 2,
-      "zoneName" : "Zone 1"
-    },
-    
-  ]);
+  const [rows , setRows] = useState([]);
 
   const handleChange = () => {
 
@@ -140,7 +131,187 @@ export default function Plan(props) {
       
   } , [])
 
+
+  useEffect(() => {
+
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getPlannings`, {
+      'project_id' : projectid ,
+      'name' : "new planning"
+    
+    }).then ( result => {
+      
+      console.log(result)
+      setRows(result.data.data)
+      setLoading(false)
+      
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+  } , [])
+
+  
+  const [projectid , setProjectId] = useState(useSelector((state) => state.projectReducer.fullProject.selectedProject.id));
  
+  // add planning 
+
+  const addPlanning = () => {
+
+    setLoading(true)
+
+    axios.post(`http://127.0.0.1:8000/api/v1/planning`, {
+      'project_id' : projectid ,
+      'name' : "new Event"
+    
+    }).then ( result => {
+      
+      console.log(result)
+
+      
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getPlannings`, {
+      'project_id' : projectid ,
+      'name' : "new planning"
+    
+    }).then ( result => {
+      
+      console.log(result)
+      setRows(result.data.data)
+
+      setLoading(false)
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+  }
+
+  // selected planning
+
+  const [ selectedPlanning , setSelectedPlanning] = useState({
+    id : "",
+    name : "",
+    description : "",
+    category : "",
+    concerne : "",
+    
+   
+  })
+
+
+  const handleSelectedPlanningChange =
+    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+
+      console.log(event.target.value)
+      setSelectedPlanning({ ...selectedPlanning, [prop]: event.target.value });
+      
+    };
+
+    const select = useSelector
+
+   const [startDate , setStartDate] = useState("");
+   const [endDate , setEndDate] = useState("");
+   let accessToken = select((state : any )=> state.userReducer.user.accessToken)
+   
+   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+   const save = () => {
+
+    setLoading(true)
+    axios.post(`http://127.0.0.1:8000/api/v1/updatePlanning`, {
+      'project_id' : projectid ,
+      'id' : selectedPlanning.id ,
+      'description' : selectedPlanning.description ,
+      'category' : selectedPlanning.category ,
+      'concerne' : selectedPlanning.concerne ,
+      'name' : selectedPlanning.name,
+      'startDate' : startDate,
+      'endDate' : endDate,
+     
+    
+    }).then ( result => {
+    
+      console.log(result)
+
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getPlannings`, {
+      'project_id' : projectid ,
+      'name' : "new planning"
+    
+    }).then ( result => {
+      
+      console.log(result)
+      setRows(result.data.data)
+
+      setLoading(false)
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+   }
+
+
+   // select planning
+
+   const selectPlanning = (id) => {
+
+    const temp = rows.find((element) => {
+      return element.id === id;
+    })
+
+    setSelectedPlanning(temp)
+    setStartDate(temp.startDate)
+    setEndDate(temp.endDate)
+    console.log(selectedPlanning)
+
+   }
+
+   // delete planning 
+
+ const deletePlanning = () => {
+
+  setLoading(true)
+
+    axios.post(`http://127.0.0.1:8000/api/v1/deletePlanning`, {
+      
+      'id' : selectedPlanning.id
+    
+    }).then ( result => {
+      
+      console.log(result)
+      setRows(result.data.data)
+      setLoading(false)
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+
+  }
+
+  // loading dialogue 
+  const [loading , setLoading] = useState(true);
 
   return (
 
@@ -158,6 +329,20 @@ export default function Plan(props) {
 
       </Paper>
     </Box>
+
+    <Dialog  PaperProps={{
+    style: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    },
+  }} maxWidth="md" open={loading}>
+   
+        <DialogContent>
+        {loading && <CircularProgress color="secondary" />} 
+          
+        </DialogContent>
+      
+      </Dialog>
 
    </Grid>
 
@@ -177,24 +362,23 @@ Evenement
 <Table  aria-label="custom pagination table">
         <TableBody>
           
-        <TableRow  className={classes.tr}>
+        
+        {rows?.map((row) => (
+            <TableRow onClick={() => selectPlanning(row.id)} className={classes.tr} key={row.id}>
               <a  style={{textDecoration : "none" }}>
               <TableCell   scope="row">
-                <h5>1 Evenement sans titre</h5>
-                <p>lin : 23/05/2022 <br/> Tous corps d'etat</p>
+
+               <h6 style={{fontWeight : "bold"}}>{row.name}</h6>
+                <p>
+                {row.description} <br/>starDate : {row.startDate}
+                </p>
+                
               </TableCell>
              
               </a>
             </TableRow>
-            <TableRow  className={classes.tr}>
-              <a  style={{textDecoration : "none" }}>
-              <TableCell   scope="row">
-                <h5>2 Evenement sans titre</h5>
-                <p>lin : 19/05/2022 <br/> Tous corps d'etat</p>
-              </TableCell>
-             
-              </a>
-            </TableRow>
+          ))}
+         
         </TableBody></Table> 
 </Paper>
 </Grid>
@@ -219,16 +403,30 @@ Planes
   justifyContent="flex-end"
   alignItems="center" sm={12} md={12} xs={12} sx={{mb:4}} >
 
-   <AddCircleIcon sx={{color : "#2074d4"}} className='add-icons' fontSize='large'/>
+   <AddCircleIcon onClick={addPlanning} sx={{color : "#2074d4"}} className='add-icons' fontSize='large'/>
 </Grid>
-   
+<Grid spacing={2} container sm={12} md={12} xs={12} >
+
+<FormControl fullWidth sx={{ mt: 5 }}>
+    <InputLabel htmlFor="outlined-adornment-amount">Name</InputLabel>
+    <OutlinedInput
+      id="outlined-adornment-amount"
+          value={selectedPlanning.name}
+          onChange={handleSelectedPlanningChange("name")}
+      startAdornment={<InputAdornment position="start"></InputAdornment>}
+      label="meeting Objectif"
+      size = "medium"
+    />
+  </FormControl>
+</Grid>
    <Grid spacing={2} container sm={12} md={12} xs={12} >
 
    <FormControl fullWidth sx={{ mt: 5 }}>
        <InputLabel htmlFor="outlined-adornment-amount">Description</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
-
+         value={selectedPlanning?.description}
+         onChange={handleSelectedPlanningChange("description")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
          label="meeting Objectif"
          size = "medium"
@@ -241,7 +439,8 @@ Planes
     <InputLabel htmlFor="outlined-adornment-amount">Catégorie</InputLabel>
     <OutlinedInput
       id="outlined-adornment-amount"
-
+      value={selectedPlanning?.category}
+      onChange={handleSelectedPlanningChange("category")}
       startAdornment={<InputAdornment position="start"></InputAdornment>}
       label="meeting Objectif"
       size = "medium"
@@ -255,9 +454,11 @@ Planes
   <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"
-            value = {selectedMeeting?.phase}
+    value={selectedPlanning.concerne}
+    onChange={handleSelectedPlanningChange("concerne")}
+           
     label="phase de la visite"
-    onChange={handleChange}
+   
   >
     <MenuItem value={1}>Tous corps d'état</MenuItem>
 
@@ -271,17 +472,15 @@ Planes
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
        
 
-       <KeyboardDateTimePicker
-         variant="inline"
-         ampm={false}
-         label="date de debut"
-             color="primary"
-         onError={console.log}
-      
-         format="yyyy/MM/dd"
-      
-         
-       />
+                            <DatePicker
+        views={["year", "month" , "day"]}
+        label="Date debut"
+       
+        
+        value={startDate}
+        onChange={setStartDate}
+      />
+
         </MuiPickersUtilsProvider>
         </FormControl>
 
@@ -290,27 +489,38 @@ Planes
                            
  <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
-
-<KeyboardDateTimePicker
-variant="inline"
-ampm={false}
-label="date de fin"
-color="primary"
-onError={console.log}
-
-format="yyyy/MM/dd"
-
-
-/>
+ <DatePicker
+        views={["year", "month" , "day"]}
+        label="Date fin"
+      
+        
+        value={endDate}
+        onChange={setEndDate}
+      />
 </MuiPickersUtilsProvider>
 </FormControl>
-
-<Grid sx={{mt:5}} item sm={12} md={12} xs={12}  container
+  <Grid sx={{mt:5}} item sm={12} md={12} xs={12}  container
   direction="row"
   justifyContent="center"
   alignItems="center">
     <Paper elevation={2}>
-     <Button variant="outlined" color="error" sx={{width : {
+     <Button onClick={save} variant="contained" sx={{width : {
+
+       md : 1000 ,
+
+     }}}>
+       Enregistrer
+     </Button>
+     </Paper>
+     </Grid>
+<Grid  item sm={12} md={12} xs={12}  container
+  direction="row"
+  justifyContent="center"
+  alignItems="center"
+  
+  >
+    <Paper elevation={2}>
+     <Button onClick={deletePlanning} variant="outlined" color="error"  sx={{width : {
 
        md : 1000 ,
 
@@ -318,6 +528,7 @@ format="yyyy/MM/dd"
        Supprimer le planning
      </Button>
      </Paper></Grid>
+     
 </Grid>
 
 

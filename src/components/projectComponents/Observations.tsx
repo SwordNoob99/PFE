@@ -76,51 +76,60 @@ export default function Observations(props) {
   const [rows , setRows] = useState([
 
 
-    {
-      id : 2 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
-    {
-      id : 3 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
-    {
-      id : 4 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
-    {
-      id : 5 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
+   
   ]);
 
 
   const classes = useStyles();
-  const [selectedObs , setSelectedObs] = useState()
+
+
+const select = useSelector
+const [projectid , setProjectId] = useState(useSelector((state) => state.projectReducer.fullProject.selectedProject.id));
+const accessToken = select((state : any )=> state.userReducer.user.accessToken)
+axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+
+  const [openEdit , setOpenEdit] = useState(false)
+
+  // add 
+  const add = () => {
+
+     
+    axios.post(`http://127.0.0.1:8000/api/v1/observation`, {
+      'projectId' : projectid ,
+    
+
+     
+    
+    }).then ( result => {
+     
+  
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+      'projectId' : projectid ,
+      
+
+     
+    
+    }).then ( result => {
+     
+      setRows(result.data.data)
+      
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+  }
 
   const handleClickTable = (rowId) => {
 
@@ -129,17 +138,160 @@ export default function Observations(props) {
       return element.id === rowId;
     })
 
-    setSelectedObs(temp)
+
     setOpenEdit(true)
+    setDate(temp.limite)
+    setSelectedObservation(temp)
+
+
+}
+
+const [selectedObservation , setSelectedObservation] = useState({
+
+  id : "",
+  localisation : "",
+  description : "",
+  created : "",
+  limite : "",
+  lever : "",
+  lot : ""
+})
+
+const handleSelectedObservationChange =
+(prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  console.log(event.target.value)
+  setSelectedObservation({ ...selectedObservation, [prop]: event.target.value });
+  
+};
+
+useEffect(() => {
+
+
+  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+    'projectId' : projectid ,
+    
+
+   
+  
+  }).then ( result => {
+   
+    setRows(result.data.data)
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+
+} , [])
+
+const save = () => {
+
+  axios.post(`http://127.0.0.1:8000/api/v1/updateObservation`, {
+    'projectId' : projectid ,
+    'id' : selectedObservation.id ,
+    'localisation' : selectedObservation.localisation ,
+    'description' : selectedObservation.description ,
+    'created' : selectedObservation.created ,
+    'limite' : date ,
+    'lever' : selectedObservation.lever ,
+    'lot' : selectedObservation.lot ,
+    
+
+   
+  
+  }).then ( result => {
+   
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+
+  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+    'projectId' : projectid ,
+    
+
+   
+  
+  }).then ( result => {
+   
+    setRows(result.data.data)
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+
+}
+
+ 
+const [date , setDate] = useState("")
+  
+const ClickTable = (rowId) => {
+
+  const temp = rows.find((element) => {
+    return element.id === rowId;
+  })
+
+
+
+  setDate(temp.limite)
+  setSelectedObservation(temp)
 
   
 
 }
 
-  const [openEdit , setOpenEdit] = useState(false)
+const deleteObservation = () => {
 
- 
+  axios.post(`http://127.0.0.1:8000/api/v1/deleteObservation`, {
+    'projectId' : projectid ,
+    'id' : selectedObservation.id
+
+   
   
+  }).then ( result => {
+  
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+
+
+  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+    'projectId' : projectid ,
+    
+
+   
+  
+  }).then ( result => {
+   
+    setRows(result.data.data)
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+
+
+}
 
   return (
 
@@ -165,7 +317,8 @@ export default function Observations(props) {
                                     required
                                     fullWidth
                                     name="name"
-                                    value={selectedObs?.localisation}
+                                    value={selectedObservation?.localisation}
+                                    onChange = {handleSelectedObservationChange("localisation")}
                                  
                                 />
                             </Grid>
@@ -177,7 +330,8 @@ export default function Observations(props) {
                                     required
                                     fullWidth
                                     name="description"
-                                    value={selectedObs?.description}
+                                    value={selectedObservation?.description}
+                                    onChange = {handleSelectedObservationChange("description")}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -190,7 +344,8 @@ export default function Observations(props) {
          label="date de creation"
              color="primary"
          onError={console.log}
-         value={selectedObs?.created}
+         value={selectedObservation?.created}
+         onChange = {handleSelectedObservationChange("created")}
          format="yyyy/MM/dd"
          disabled
          
@@ -198,21 +353,21 @@ export default function Observations(props) {
         </MuiPickersUtilsProvider>
                             </Grid>
                             <Grid item xs={6}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                           
        
 
-       <KeyboardDateTimePicker
-         variant="inline"
-         ampm={false}
-         label="date limite"
-             color="primary"
-         onError={console.log}
-         value={selectedObs?.created}
-         format="yyyy/MM/dd"
-      
-         
-       />
-        </MuiPickersUtilsProvider>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+<DatePicker
+       views={["year", "month" , "day"]}
+       label="date"
+     
+       format={'yyyy/MM/dd'}
+ 
+       value={date}
+       onChange={setDate}
+     />
+</MuiPickersUtilsProvider>
                             </Grid>
                             <Grid item xs={12}>
                                <Grid   container
@@ -238,7 +393,7 @@ md : 800 ,
                             <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"
-           
+           value = {selectedObservation.status}
     label="phase de la visite"
   
   >
@@ -262,7 +417,7 @@ md : 800 ,
                                     color="primary"
                                     type='submit'
                                     disableElevation
-                                    onClick={() => setOpenEdit(false)}
+                                    onClick={save}
                                 >
                                     enregistrer
                                 </Button>
@@ -292,9 +447,9 @@ md : 800 ,
   justifyContent="space-between"
   alignItems="center">
 
-<DeleteIcon className='add-icon'/>
+<DeleteIcon onClick = {deleteObservation} className='add-icon'/>
 <Typography fontSize={30} className="title">Observations</Typography>
-<AddCircleIcon className='add-icon' fontSize='large'/>
+<AddCircleIcon onClick={add} className='add-icon' fontSize='large'/>
 
 
    </Grid>
@@ -336,7 +491,7 @@ md : 800 ,
           {rows?.map((row) => (
             <TableRow  className={classes.tr} key={row.id}>
               
-              <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
+              <TableCell onClick={() => ClickTable(row.id)}  scope="row">
               <Checkbox   size="small" />
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
