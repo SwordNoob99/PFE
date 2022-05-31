@@ -625,7 +625,7 @@ Planes
    <Grid spacing={2} container sm={12} md={12} xs={12} >
 
    <FormControl fullWidth sx={{ mt: 5 }}>
-       <InputLabel htmlFor="outlined-adornment-amount">Nom DE LA ZONE</InputLabel>
+       <InputLabel htmlFor="outlined-adornment-amount">Nom De La Zone</InputLabel>
        <OutlinedInput onChange = {(event) => updateName(event , selectedZone?.id)}
          id="outlined-adornment-amount"
         value = {selectedZone?.id == 99999 ? "Non Classifiée" : selectedZone?.zoneName}
@@ -671,11 +671,11 @@ Planes
         <TableRow  sx={{bgcolor: "rgb(219, 210, 210)" }} >
               
               <TableCell   scope="row">
-              Nom du fichier
+              Nom Du Fichier 
               </TableCell>
 
               <TableCell   scope="row">
-              download
+              Download
               </TableCell>
     
               </TableRow >
@@ -737,11 +737,11 @@ Planes
         <TableRow  sx={{bgcolor: "rgb(219, 210, 210)" }} >
               
               <TableCell   scope="row">
-              Nom du fichier
+              Nom Du Fichier 
               </TableCell>
 
               <TableCell   scope="row">
-              download
+              Télécharger
               </TableCell>
     
               </TableRow >

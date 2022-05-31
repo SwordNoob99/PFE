@@ -37,10 +37,10 @@ class Rapport extends Component {
                                     <div className="well well-sm">
                                         <form className="form-horizontal" method="post">
                                             <fieldset>
-                                                <legend className="text-center header">Add new Post</legend>
+                                                <legend className="text-center header">Ajouter un nouveau rapport</legend>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
-                                                    <input onChange={this.onChange('title')} name="title" type="text" placeholder="Post Title" className="form-control" />
+                                                    <input onChange={this.onChange('title')} name="title" type="text" placeholder="Titre de l'article" className="form-control" />
                                                 </div>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
@@ -48,10 +48,10 @@ class Rapport extends Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-pencil-square-o bigicon"></i></span>
-                                                    <textarea onChange={this.onChange('content')} className="form-control" name="content" placeholder="Enter your text here" rows="7"></textarea>
+                                                    <textarea onChange={this.onChange('content')} className="form-control" name="content" placeholder="Entrez votre texte ici" rows="7"></textarea>
                                                 </div>
                                                 <div className="form-group">
-                                                    <button type="button" onClick={this.sunmitPost} className="btn btn-primary btn-lg">Submit</button>
+                                                    <button type="button" onClick={this.sunmitPost} className="btn btn-primary btn-lg">Soumettre</button>
                                                 </div>
                                             </fieldset>
                                         </form>

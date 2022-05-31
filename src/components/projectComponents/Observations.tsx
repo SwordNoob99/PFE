@@ -325,7 +325,7 @@ const deleteObservation = () => {
 
                             <Grid item xs={9}>
                                 <TextField
-                                    label="description"
+                                    label="Description"
                                     type="text"
                                     required
                                     fullWidth
@@ -341,7 +341,7 @@ const deleteObservation = () => {
        <KeyboardDateTimePicker
          variant="inline"
          ampm={false}
-         label="date de creation"
+         label="Date De Creation"
              color="primary"
          onError={console.log}
          value={selectedObservation?.created}
@@ -409,7 +409,7 @@ md : 800 ,
                             
                             <Grid item xs={12}>
                                 <Button variant="contained" onClick={() => setOpenEdit(false)} disableElevation>
-                                    FERMER
+                                    Fermer
                                 </Button>
                                 <Button
                                     style={{ marginLeft: '15px' }}
@@ -430,7 +430,7 @@ md : 800 ,
                                     disableElevation
                                     onClick={() => setOpenEdit(false)}
                                 >
-                                    supprimer
+                                    Supprimer
                                 </Button>
                             </Grid>
                         </Grid>

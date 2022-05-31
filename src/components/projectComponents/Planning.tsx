@@ -137,7 +137,7 @@ export default function Plan(props) {
 
     axios.post(`http://127.0.0.1:8000/api/v1/getPlannings`, {
       'project_id' : projectid ,
-      'name' : "new planning"
+      'name' : "nouvelle planification"
     
     }).then ( result => {
       
@@ -253,7 +253,7 @@ export default function Plan(props) {
 
     axios.post(`http://127.0.0.1:8000/api/v1/getPlannings`, {
       'project_id' : projectid ,
-      'name' : "new planning"
+      'name' : "nouvelle planification"
     
     }).then ( result => {
       
@@ -414,7 +414,7 @@ Planes
           value={selectedPlanning.name}
           onChange={handleSelectedPlanningChange("name")}
       startAdornment={<InputAdornment position="start"></InputAdornment>}
-      label="meeting Objectif"
+      label="réunion Objectif"
       size = "medium"
     />
   </FormControl>
@@ -428,7 +428,7 @@ Planes
          value={selectedPlanning?.description}
          onChange={handleSelectedPlanningChange("description")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
-         label="meeting Objectif"
+         label="réunion Objectif"
          size = "medium"
        />
      </FormControl>
@@ -442,7 +442,7 @@ Planes
       value={selectedPlanning?.category}
       onChange={handleSelectedPlanningChange("category")}
       startAdornment={<InputAdornment position="start"></InputAdornment>}
-      label="meeting Objectif"
+      label="réunion Objectif"
       size = "medium"
     />
   </FormControl>
@@ -450,7 +450,7 @@ Planes
 <Grid spacing={2} container sm={12} md={12} xs={12} >
 
 <FormControl fullWidth sx={{ mt: 5 }}>
-<InputLabel id="demo-simple-select-label"> concerne</InputLabel>
+<InputLabel id="demo-simple-select-label"> Concerne</InputLabel>
   <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"

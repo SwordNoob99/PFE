@@ -8,8 +8,7 @@ function user(){
   
         return (
             <div>
-                    <h1>this is the user page
-
+                    <h1> C'est La Page Utilisateur
                     </h1>
             </div>
         );

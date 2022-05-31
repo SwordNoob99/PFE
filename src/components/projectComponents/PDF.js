@@ -12,7 +12,7 @@ const PDF = (props) => {
         <p>{props.content}</p>
       </div>
       <Pdf targetRef={ref} filename="rapport.pdf">
-        {({ toPdf }) => <button onClick={toPdf}>Saisir en format PDF</button>}
+        {({ toPdf }) => <button onClick={toPdf}>Saisir En Format PDF</button>}
       </Pdf>
     </>
   );

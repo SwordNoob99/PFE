@@ -45,7 +45,7 @@ class Project extends Component {
     
       handleSubmit = event => {
         event.preventDefault();
-          console.log('we got here');
+          console.log('Nous allons là-bas');
      
     
           
@@ -76,11 +76,11 @@ class Project extends Component {
         return (
             <div>
         <div className="page-header">
-          <h3 className="page-title"> Add Project </h3>
+          <h3 className="page-title"> Ajouter un projet </h3>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>basic features</a></li>
-              <li className="breadcrumb-item active" aria-current="page">Project</li>
+              <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>Caractéristiques de base</a></li>
+              <li className="breadcrumb-item active" aria-current="page">Projet</li>
             </ol>
           </nav>
         </div>
@@ -91,45 +91,62 @@ class Project extends Component {
           <div className="col-12 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Project</h4>
+                <h4 className="card-title">Projet</h4>
                
                 <form className="forms-sample"  onSubmit={this.handleSubmit}>
                   <Form.Group>
-                    <label htmlFor="exampleInputName1">Name</label>
-                    <Form.Control value={this.state.projectName} type="text" className="form-control" id="exampleInputName1" placeholder="Name" name='projectName' onChange={this.handleChange} />
+                    <label htmlFor="exampleInputName1">Nom</label>
+                    <Form.Control value={this.state.projectName} type="text" className="form-control" id="exampleInputName1" placeholder="Nom" name='projectName' onChange={this.handleChange} />
                   </Form.Group>
                   <Form.Group>
-                    <label htmlFor="exampleSelectGender">Lot De travaus</label>
+                    <label htmlFor="exampleSelectGender">Lot De Travaux</label>
                     <select className="form-control" id="exampleSelectGender">
-                      <option>text</option>
-                      <option>Female</option>
+                      <option>Text</option>
+                      <option>Document</option>
                     </select>
                   </Form.Group>
                 
                     <Form.Group>
                     <label htmlFor="exampleSelectGender">Type de Construction</label>
                     <select className="form-control" id="exampleSelectGender">
-                      <option>meuble</option>
-                      <option>Female</option>
+                      <option>Meuble</option>
+                      <option>Villa</option>
+                      <option>Aéroport</option>
+<option>Appartement</option>
+<option>Atelier</option>
+<option>Atelier d'artiste</option>
+<option>Boulangerie</option>
+<option>Boutique</option>
+<option>Bureaux</option>
+<option>Café</option>
+<option>Centre administratif</option>
+<option>Centre commercial</option>
+<option>Centre culturel</option>
+<option>Centre culturel</option>
+<option>Centre d'appels</option>
+<option>Centre de conférences</option>
+<option>Centre de traitement</option>
+<option>Cinéma</option>
+<option>Clinique</option>
                     </select>
                   </Form.Group>
                   <Form.Group>
                     <label>File upload</label>
                     <div className="custom-file">
                       <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es" name='image' onChange={this.handleChange}/>
-                      <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
+                      <label className="custom-file-label" htmlFor="customFileLang">Télécharger une image</label>
                     </div>
                   </Form.Group>
                   <Form.Group>
-                    <label htmlFor="exampleInputCity1">City</label>
+                    <label htmlFor="exampleInputCity1">Ville</label>
                     <Form.Control type="text" className="form-control" id="exampleInputCity1" placeholder="Location" />
                   </Form.Group>
                   <Form.Group>
-                    <label htmlFor="exampleTextarea1">Textarea</label>
+                    <label htmlFor="exampleTextarea1">Zone de texte</label>
                     <textarea className="form-control" id="exampleTextarea1" name='description' rows="4" onChange={this.handleChange}></textarea>
                   </Form.Group>
-                  <button type="submit" className="btn btn-primary mr-2" >Submit</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button type="submit" className="btn btn-primary mr-2" >Soumettre</button>
+                  <button className="btn btn-light">Annuler</button>
                 </form>
               </div>
             </div>
