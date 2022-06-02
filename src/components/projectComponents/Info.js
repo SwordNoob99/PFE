@@ -41,9 +41,9 @@ class Info extends Component {
                    <div className='project-form'>
 
                     <div className='p-form-control'>
-                   <input className="form-control form-control-lg project-form-control" type="text" placeholder="Project Name"></input>
+                   <input className="form-control form-control-lg project-form-control" type="text" placeholder="Nom du projet"></input>
                    <input className="form-control form-control-lg project-form-control" type="text" placeholder="Addresse"></input>
-                   <input className="form-control form-control-lg project-form-control" type="text" placeholder="City"></input>
+                   <input className="form-control form-control-lg project-form-control" type="text" placeholder="Ville"></input>
                    </div>
 
                    <div className='projectImage'>
@@ -60,7 +60,7 @@ class Info extends Component {
 <div className='project-informations'>
 
                    <div className='project-informations-title'>
-                    <h2>Project Members</h2>
+                    <h2>Membres du projet</h2>
 
                     
 
@@ -89,7 +89,7 @@ class Info extends Component {
 <div className='project-informations'>
 
                    <div className='project-informations-title'>
-                    <h2>Work Packages</h2>
+                    <h2>Lots De Travaux</h2>
                
                    </div>
 

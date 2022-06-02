@@ -261,7 +261,7 @@ md : 800 ,
                                     disableElevation
                                     onClick={() => setOpenEdit(false)}
                                 >
-                                    enregistrer
+                                    Enregistrer
                                 </Button>
 
                                 <Button
@@ -272,7 +272,7 @@ md : 800 ,
                                     disableElevation
                                     onClick={() => setOpenEdit(false)}
                                 >
-                                    supprimer
+                                    Supprimer
                                 </Button>
                             </Grid>
                         </Grid>

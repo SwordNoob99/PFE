@@ -29,6 +29,8 @@ import Meetings from './components/projectComponents/Meetings';
 import Remarques from './components/projectComponents/Remarque'
 import Planning from './components/projectComponents/Planning';
 import Plan from './components/projectComponents/Plan';
+import Rapport from './components/projectComponents/Rapport';
+import Paiement from './components/projectComponents/Paiement';
 
 
 
@@ -47,6 +49,8 @@ function App() {
 
  const  user = useSelector(state => state.userReducer.user)
   const expand = useSelector(state => state.appBarReducer.isOpen)
+
+  const[checkout, setCheckOut] = useState(false)
   
 
 
@@ -95,6 +99,7 @@ function App() {
             <Route path='meetings' element = { <Meetings />}></Route>
             <Route path='planning' element = { <Planning />}></Route>
             <Route path='plans' element = { <Plan />}></Route>
+            <Route path='rapport' element = { <Rapport />}></Route>
            
                   
                    
@@ -129,6 +134,22 @@ function App() {
 
 } 
     </Router>
+    <div className="App">
+{checkout ? (
+  <Paiement />
+):(
+  <button
+  onClick={()=> {
+    setCheckOut(true);
+  }}
+  >
+
+    Checkout
+  </button>
+)}
+
+    </div>
+
     </>
   );
 }

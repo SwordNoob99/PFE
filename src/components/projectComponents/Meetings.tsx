@@ -315,7 +315,7 @@ export default function Meetings(props) {
     <Box sx={{ width: '100%' , p:1  }}>
     <Paper    elevation={7}>
     <Typography align='center' variant="h4" component="div" gutterBottom>
-        Meetings
+    Réunions
       </Typography>
 
       </Paper>
@@ -334,7 +334,7 @@ export default function Meetings(props) {
 }} >
 
 <div className="tableBanner">
-Meeting Dates
+Dates de réunion
 </div>
 <Table  aria-label="custom pagination table">
         <TableBody>
@@ -401,13 +401,13 @@ Meeting
    </Grid>
    <Grid item sm={12} md={6} xs={12}>
    <FormControl fullWidth sx={{ m: 1 }}>
-       <InputLabel htmlFor="outlined-adornment-amount">meeting Objectif</InputLabel>
+       <InputLabel htmlFor="outlined-adornment-amount">Réunion Objectif</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
          value = {selectedMeeting?.object}
          onChange = {handleSelectedMeetingChange("object")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
-         label="meeting Objectif"
+         label="Réunion Objectif"
          size = "medium"
        />
      </FormControl>
@@ -415,13 +415,13 @@ Meeting
 
      <Grid item sm={12} md={6} xs={12}>
      <FormControl fullWidth sx={{ m: 1  }}>
-       <InputLabel htmlFor="outlined-adornment-amount">Notes</InputLabel>
+       <InputLabel htmlFor="outlined-adornment-amount">Note</InputLabel>
        <OutlinedInput
          id="outlined-adornment-amount"
          value = {selectedMeeting?.note}
          onChange = {handleSelectedMeetingChange("note")}
          startAdornment={<InputAdornment position="start"></InputAdornment>}
-         label="Notes"
+         label="Note"
          size = "medium"
       
        />
@@ -434,13 +434,13 @@ Meeting
   justifyContent="center"
   alignItems="center">
      <Button>
-       Zone de la visite
+       Zone De La Visite
      </Button>
      </Grid>
 
      <Grid item sm={12} md={6} xs={12}>
      <FormControl fullWidth sx={{ m: 1  }}>
-  <InputLabel id="demo-simple-select-label"> phase de la visite</InputLabel>
+  <InputLabel id="demo-simple-select-label"> Phase De La Visite</InputLabel>
   <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"
@@ -479,7 +479,7 @@ md : 1000 ,
 }}}>
       
     
-     Add to calendar 
+      Ajouter au calendrier
      </Button>
      </ICalendarLink>
      </Paper>
@@ -539,7 +539,7 @@ md : 1000 ,
        md : 1000 ,
 
      }}}>
-       Supprimer la visite
+       Supprimer La Visite
      </Button>
      </Paper>
      </Grid>
