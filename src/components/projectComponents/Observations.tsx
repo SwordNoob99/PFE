@@ -154,7 +154,8 @@ const [selectedObservation , setSelectedObservation] = useState({
   created : "",
   limite : "",
   lever : "",
-  lot : ""
+  lot : "",
+  status : ""
 })
 
 const handleSelectedObservationChange =
@@ -199,6 +200,7 @@ const save = () => {
     'limite' : date ,
     'lever' : selectedObservation.lever ,
     'lot' : selectedObservation.lot ,
+    'status' : selectedObservation.status ,
     
 
    
@@ -394,6 +396,7 @@ md : 800 ,
     labelId="demo-simple-select-label"
     id="demo-simple-select"
            value = {selectedObservation.status}
+           onChange = {handleSelectedObservationChange("status")}
     label="phase de la visite"
   
   >
@@ -495,7 +498,7 @@ md : 800 ,
               <Checkbox   size="small" />
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-              
+              {row.status0}
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
                 {row.localisation}
