@@ -13,10 +13,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { FormControl, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, FormControl, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
 
 import ICalendarLink from "react-icalendar-link";
-
+import { CircularProgress } from '@mui/material';
 import  { useState, useEffect } from 'react';
 
 import Button from '@mui/material/Button';
@@ -26,7 +26,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { DatePicker, DateTimePicker, KeyboardDateTimePicker , MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns'
 import "./Meetings.css";
-
+import CloseIcon from '@mui/icons-material/Close';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
@@ -165,7 +165,7 @@ export default function Meetings(props) {
   }
 
   const classes = useStyles();
-  const [qrCode , setQrCode] = useState((state : string) => "");
+
   const [isSomething , setIsSomething]   = useState(false) ;
   const [rows , setRows] = useState([]);
 
@@ -201,6 +201,45 @@ export default function Meetings(props) {
 
     e.target.dispatchEvent(new CustomEvent("itemClick", { detail }));
   };
+
+  // get qrcode for ics calendar
+
+  const [qrCodeImage , setQrCodeImage] = useState();
+  const [openQr , setOpenQr] = useState(false);
+
+  const generate = () => {
+
+    axios.post(`http://127.0.0.1:8000/api/v1/generateQrCode`, {
+   
+      'id' : selectedMeeting.id ,
+    
+
+     
+    
+    }).then ( result => {
+     
+  
+   
+      setQrCodeImage(result.data.qrcode)
+      setOpenQr(true)
+
+      setLoading(true)
+
+      setTimeout(() => {
+
+          setLoading(false)
+      } , 1500)
+      
+     
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+
+
+  }
 
   // save meeting 
 
@@ -302,7 +341,12 @@ export default function Meetings(props) {
   const [date , setDate] = useState("")
 
 
- 
+ const closeQr = () => {
+
+  setOpenQr(false)
+ }
+
+ const [loading , setLoading] = useState(false)
 
   return (
 
@@ -310,6 +354,35 @@ export default function Meetings(props) {
  <Grid container spacing={2} direction="row"
  justifyContent="space-between"
  alignItems="flex-start">
+
+<Dialog  PaperProps={{
+    style: {
+      backgroundColor: loading ? 'transparent' : "" ,
+      boxShadow: 'none',
+    },
+  }} maxWidth="md" open={openQr}>
+
+<DialogTitle sx={{ m: 0, p: 0 }}>
+ 
+    { !loading ? <IconButton onClick={closeQr}>
+        
+        <CloseIcon />
+
+        </IconButton> : "" }
+      
+    
+   
+    </DialogTitle>
+   
+        <DialogContent>
+        {loading && <CircularProgress color="secondary" />} 
+        
+        {!loading && <img src={qrCodeImage} height = "300px" />} 
+     
+          
+        </DialogContent>
+      
+      </Dialog>
 
    <Grid item md={12}>
     <Box sx={{ width: '100%' , p:1  }}>
@@ -482,6 +555,23 @@ md : 1000 ,
       Ajouter au calendrier
      </Button>
      </ICalendarLink>
+     </Paper>
+     </Grid>
+
+     <Grid item sm={12} md={12} xs={12}  container
+  direction="row"
+  justifyContent="center"
+  alignItems="center"
+  onClick = {generate}
+  >
+    <Paper elevation={2}>
+     <Button sx={{width : {
+
+       md : 1000 ,
+
+     }}}>
+       Generate calendar qr code
+     </Button>
      </Paper>
      </Grid>
 

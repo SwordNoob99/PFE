@@ -31,7 +31,7 @@ import Planning from './components/projectComponents/Planning';
 import Plan from './components/projectComponents/Plan';
 import Rapport from './components/projectComponents/Rapport';
 import Paiement from './components/projectComponents/Paiement';
-
+import HomePage from './components/projectComponents/HomePage';
 
 
 
@@ -124,7 +124,8 @@ function App() {
 
 <Routes>
 <Route path='/login' element= { < Login />} > </Route>
-<Route path="*" element={<Navigate to="/login" replace />} />
+<Route path='/homePage' element= { < HomePage />} > </Route>
+<Route path="*" element={<Navigate to="/homePage" replace />} />
 <Route path='register' element= { <RegisterDialogForm />} ></Route>
 <Route path='forgot' element= { < Forgot />} ></Route>
 
@@ -134,21 +135,7 @@ function App() {
 
 } 
     </Router>
-    <div className="App">
-{checkout ? (
-  <Paiement />
-):(
-  <button
-  onClick={()=> {
-    setCheckOut(true);
-  }}
-  >
-
-    Checkout
-  </button>
-)}
-
-    </div>
+  
 
     </>
   );

@@ -21,13 +21,14 @@ import { useSelector } from 'react-redux';
 import { add } from '../features/userProjectsSlice';
 import { Navigate } from "react-router";
 import { useState } from 'react';
+import logo from "../../assets/images/logo.png"
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        MTS Group
+        Architex
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -136,8 +137,8 @@ export default function Login(props) {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' , height : 70 , width : 70 }}>
+          <img src={logo} height = "50px" />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in

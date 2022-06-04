@@ -49,6 +49,7 @@ import Slide from '@mui/material/Slide';
 import { DatePicker } from "@material-ui/pickers";
 import { DateTimePicker, KeyboardDateTimePicker , MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns'
+import logo from "../../assets/images/logo.png"
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -264,7 +265,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            MTS Group Construction Management
+          <img src={logo} height = "50pz" />
           </Typography>
        
           

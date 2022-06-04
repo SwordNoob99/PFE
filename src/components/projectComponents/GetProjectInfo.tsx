@@ -38,10 +38,26 @@ import Snackbar from '@mui/material/Snackbar';
 import { selectFirstProject } from '../features/projectSlice';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { saveAs } from 'file-saver';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DownloadIcon from '@mui/icons-material/Download';
+// Core viewer
+import { Document, Page, pdfjs } from "react-pdf";
+
 
 
 
 export default function GetProjectInfo() {
+
+
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const onDocumentLoadSuccess =  ( numPages ) => {
+    setNumPages(numPages);
+  }
+
+  const [pdfOpen , setPdfOpen] = useState(false)
+  const [url , setUrl] = useState("")
 
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -127,6 +143,8 @@ export default function GetProjectInfo() {
 
 
   useEffect(()=>{
+
+    pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     // SEND REQUEST TO GET PROJECT
     console.log(projectid)
     axios.get(`http://127.0.0.1:8000/api/v1/project?project_id=`+projectid , {
@@ -393,7 +411,25 @@ const downloadFile = (id ) => {
   let url = upload.url(temp.documentUrl);
 
   FileSaver.saveAs(url, temp.documentUrl+".pdf");
+  
   console.log("here")
+}
+
+// document View
+
+const pdfView = (id ) => {
+
+ 
+  
+
+  const temp = documentRows.find((element) => {
+    return element.id === id;
+  })
+
+  let url = upload.url(temp.documentUrl);
+  console.log(url)
+  setUrl("C:/Users/Oussama/Downloads/kW15arbJjFL25qnWxnfXxiD.pdf")
+  setPdfOpen(true)
 }
 
 
@@ -458,6 +494,27 @@ const downloadFile = (id ) => {
   return (
 
     <>
+
+<Dialog  PaperProps={{
+    style: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    },
+  }} maxWidth="md" open={pdfOpen}>
+   
+        <DialogContent>
+        <div>
+      <Document file="./kW15arbRG7gsPs7SByqsV7Q.pdf" onLoadSuccess={onDocumentLoadSuccess}>
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <p>
+        Page {pageNumber} of {numPages}
+      </p>
+    </div>
+          
+        </DialogContent>
+      
+      </Dialog>
 
     
     
@@ -704,7 +761,8 @@ src= {formValues.image_url === '' || formValues.image_url === null || formValues
           <TableRow sx={{backgroundColor: "#0e519e"}}>
             <StyledTableCell>Document Name </StyledTableCell>
            
-            <StyledTableCell  align="right">Downlaod</StyledTableCell>
+          
+            <StyledTableCell  align="right"></StyledTableCell>
           
           </TableRow>
         </TableHead>
@@ -714,16 +772,24 @@ src= {formValues.image_url === '' || formValues.image_url === null || formValues
               <StyledTableCell component="th" scope="row">
                 {row.documentUrl}
               </StyledTableCell>
+
+           
           
               <StyledTableCell align="right"> <Button  sx={{backgroundColor : "#0e519e"}}
   variant="contained"
   component="label" onClick={(event) => downloadFile(row.id )}
 >
-  Download
+  <DownloadIcon />
 
   
   
-</Button></StyledTableCell>
+</Button>
+
+<Button onClick={(event) => pdfView(row.id )} sx={{backgroundColor : "#0e519e" , marginLeft : 2}}
+  variant="contained"
+  component="label"><RemoveRedEyeIcon /></Button>
+
+</StyledTableCell>
               
               
             </StyledTableRow>
