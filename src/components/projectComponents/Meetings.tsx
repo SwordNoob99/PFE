@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
 
+
   
 
 }));
@@ -388,7 +389,7 @@ export default function Meetings(props) {
     <Box sx={{ width: '100%' , p:1  }}>
     <Paper    elevation={7}>
     <Typography align='center' variant="h4" component="div" gutterBottom>
-    Réunions
+    Visites
       </Typography>
 
       </Paper>
@@ -407,15 +408,15 @@ export default function Meetings(props) {
 }} >
 
 <div className="tableBanner">
-Dates de réunion
+Dates
 </div>
 <Table  aria-label="custom pagination table">
         <TableBody>
           {rows?.map((row) => (
-            <TableRow  className={classes.tr} key={row.id}>
-              <a  style={{textDecoration : "none" }}>
+            <TableRow onClick={() => handleClickTable(row.id)}  className={selectedMeeting?.id == row.id ? "selectedTr" :   classes.tr } key={row.id}>
+              <a className={selectedMeeting?.id == row.id ?? "selected"  } key={row.id}  style={{textDecoration : "none" }}>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-               <h6> {row.date} </h6> <br/> {row.object}
+               <h6 className={selectedMeeting?.id == row.id ?? "selected"  }> {row.date} </h6> <br/> {row.object}
               </TableCell>
              
               </a>

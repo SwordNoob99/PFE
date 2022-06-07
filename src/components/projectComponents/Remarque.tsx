@@ -83,36 +83,7 @@ export default function Remarques(props) {
       lever : "2022/05/02",
       lot : "temp"
     },
-    {
-      id : 3 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
-    {
-      id : 4 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
-    {
-      id : 5 ,
-      status : "",
-      localisation : "somewhere",
-      description : "description",
-      created : "2022/05/23" ,
-      limite : "2022/08/05" ,
-      lever : "2022/05/02",
-      lot : "temp"
-    },
+
   ]);
 
 

@@ -168,7 +168,7 @@ const handleSelectedObservationChange =
 
 useEffect(() => {
 
-
+  
   axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
     'projectId' : projectid ,
     
@@ -187,11 +187,15 @@ useEffect(() => {
     console.log(error)
   } )
 
+  
+
 } , [])
 
-const save = () => {
+ const save = () => {
 
-  axios.post(`http://127.0.0.1:8000/api/v1/updateObservation`, {
+
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+axios.put(`http://127.0.0.1:8000/api/v1/test`, {
     'projectId' : projectid ,
     'id' : selectedObservation.id ,
     'localisation' : selectedObservation.localisation ,
@@ -205,34 +209,9 @@ const save = () => {
 
    
   
-  }).then ( result => {
-   
-    
-    
-   
-                
-  }
-  ).catch(error => {
-    console.log(error)
-  } )
+  })
 
-  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
-    'projectId' : projectid ,
-    
 
-   
-  
-  }).then ( result => {
-   
-    setRows(result.data.data)
-    
-    
-   
-                
-  }
-  ).catch(error => {
-    console.log(error)
-  } )
 
 }
 
@@ -391,6 +370,23 @@ md : 800 ,
                             </Grid>
                             <Grid item xs={12}>
                             <FormControl fullWidth sx={{ m: 1  }}>
+  <InputLabel id="demo-simple-select-label"> lot des travaux</InputLabel>
+                            <Select 
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+           value = {selectedObservation.status}
+           onChange = {handleSelectedObservationChange("status")}
+    label="phase de la visite"
+  
+  >
+
+  
+
+  </Select>
+  </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                            <FormControl fullWidth sx={{ m: 1  }}>
   <InputLabel id="demo-simple-select-label"> Status</InputLabel>
                             <Select 
     labelId="demo-simple-select-label"
@@ -403,7 +399,7 @@ md : 800 ,
     <MenuItem value={1}>Posé</MenuItem>
     <MenuItem value={2}>Traitée</MenuItem>
     <MenuItem value={4}>Refusée</MenuItem>
-    <MenuItem value={4}>Cloisons</MenuItem>
+
   
 
   </Select>
@@ -489,7 +485,22 @@ md : 800 ,
               Lot de travaux
               </TableCell>
              
-        
+      
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
             </TableRow>
           {rows?.map((row) => (
             <TableRow  className={classes.tr} key={row.id}>
@@ -498,7 +509,7 @@ md : 800 ,
               <Checkbox   size="small" />
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-              {row.status0}
+              {row.status == 1 ? <div className="ball b1"></div> : ""} {row.status == 2 ? <div className="ball b3"></div> : ""} {row.status == 3 || row.status == 4 ? <div className="ball b2"></div> : ""} 
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
                 {row.localisation}
@@ -507,7 +518,7 @@ md : 800 ,
                 {row.description}
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
-                {row.created}
+                {row.created_at}
               </TableCell>
               <TableCell onClick={() => handleClickTable(row.id)}  scope="row">
                 {row.limite}

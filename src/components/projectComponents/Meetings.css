@@ -33,3 +33,19 @@ a {
     color : #2074d4;
     transform: scale(1.5);
   }
+
+
+.selectedTr{
+
+    background-color: #212F3D;
+     
+      cursor : pointer;
+
+    
+      
+  }
+
+  .selected {
+
+    color : aliceblue;
+  }

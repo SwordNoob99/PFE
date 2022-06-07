@@ -36,7 +36,7 @@ export const SidebarData = [
 
 } ,
 {
-    title : 'Meetings' ,
+    title : 'Visites' ,
     path : '/meetings',
     icon : <MdMeetingRoom size={20} /> ,
     cName : 'nav-text'
@@ -44,7 +44,7 @@ export const SidebarData = [
 
 },
 {
-    title : 'observations' ,
+    title : 'Observations' ,
     path : '/observations',
     icon : <AiOutlineIssuesClose size={20} /> ,
     cName : 'nav-text'
@@ -61,7 +61,7 @@ export const SidebarData = [
 },
 {
     title : 'Reports' ,
-    path : '/',
+    path : '/rapport',
     icon : <HiDocumentReport size={20} /> ,
     cName : 'nav-text'
 

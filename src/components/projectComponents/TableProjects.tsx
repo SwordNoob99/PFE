@@ -374,7 +374,7 @@ boxShadow: 'none',
 
       </Grid>
       <Grid item xs={2}  style={{ float : "right" }}>
-      <Button onClick={handleClickDialogueOpen} variant="contained">Add</Button>
+      <Button onClick={handleClickDialogueOpen} variant="contained">Ajouter un project</Button>
       </Grid>
 
      
@@ -410,7 +410,7 @@ boxShadow: 'none',
               page={page}
               SelectProps={{
                 inputProps: {
-                  'aria-label': 'rows per page',
+                  
                 },
                 native: true,
               }}
@@ -440,17 +440,17 @@ boxShadow: 'none',
       </Grid>
      
       <Dialog maxWidth="md" open={dialogueOpen} onClose={handleClickDialogueClose}>
-        <DialogTitle>Add</DialogTitle>
+        <DialogTitle>Ajouter un projet</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Add new project name
+            Nom du projet
           </DialogContentText>
           <TextField value={projectName} id="standard-basic" label="Standard" variant="standard" onChange={(event) => handleTextFieldChange(event)}/>
           
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClickDialogueClose}>Cancel</Button>
-          <Button onClick={createProject}>Add</Button>
+          <Button  onClick={handleClickDialogueClose}>Annuler</Button>
+          <Button  onClick={createProject}>Ajouter</Button>
         
         </DialogActions>
       </Dialog>

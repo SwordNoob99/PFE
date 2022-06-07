@@ -580,7 +580,7 @@ Zones
     justifyContent="center">
 
 <div className="tableBanner">
-Planes
+Plans
 </div>
 <Paper elevation={2}>
 <Box sx={{ width: '100%' }}>
@@ -644,7 +644,7 @@ Planes
   component="label"
   sx={{backgroundColor : "#0e519e"}}
 >
-  Upload Plan
+  Ajouter un Plan
   <Input onChange={uploadPlan()}
     type="file"
     hidden
@@ -675,7 +675,7 @@ Planes
               </TableCell>
 
               <TableCell   scope="row">
-              Download
+              Télécharger
               </TableCell>
     
               </TableRow >
@@ -691,7 +691,7 @@ Planes
   variant="contained"
   component="label" onClick={(event) => downloadFile(row.id )}
 >
-  Download
+Télécharger
 
   
   
@@ -710,7 +710,7 @@ Planes
   component="label"
   sx={{backgroundColor : "#0e519e" , mt : 4}}
 >
-  Upload Document
+  Ajouter un Document
   <Input onChange={uploadDocument()}
     type="file"
     hidden
@@ -757,8 +757,7 @@ Planes
   variant="contained"
   component="label" onClick={(event) => downloadDocument(row.id )}
 >
-  Download
-
+Télécharger
   
   
 </Button>

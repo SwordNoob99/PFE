@@ -191,6 +191,26 @@ export default function GetProjectInfo() {
     } )
 
 
+    axios.post(`http://127.0.0.1:8000/api/v1/getLots`, {
+      'project_id' : projectid ,
+
+    
+    }).then ( result => {
+
+      
+
+      setALots(result.data.data)
+  
+      
+  
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+
+
     axios.post(`http://127.0.0.1:8000/api/v1/colbs`, {
       'project_id' : projectid ,
       
@@ -199,6 +219,27 @@ export default function GetProjectInfo() {
       setLoading(false)
       let colabs = result.data.data 
       setCollaboratorsRows(colabs)
+
+      
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    // descs
+
+    axios.post(`http://127.0.0.1:8000/api/v1/lots`, {
+      'project_id' : projectid ,
+      
+    
+    }).then ( result => {
+      setLoading(false)
+      let descs = result.data.data 
+      setDescs(descs)
+
+      console.log(descs)
 
       
 
@@ -299,6 +340,9 @@ const upload = new Upload({apiKey: "public_kW15arb4FUZhopvZDDgVuCd3efCY"})
       console.log(error)
     } )
 
+
+  
+
     setLoading(false)
       setDocumentUpload(true)
     
@@ -333,6 +377,11 @@ const [loading , setLoading] = useState(true);
 
 const [collaboratorsRows , setCollaboratorsRows] = useState([])
 
+// handle lots descs
+
+const [descs , setDescs] = useState([])
+
+const [aLots , setALots] =  useState([])
 // DOCUMENT TABLE 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -460,6 +509,20 @@ const pdfView = (id ) => {
       console.log(event.target.value)
     };
 
+    /// lot des travaux
+
+    const [lotForm , setlotForm] = useState({
+      collab_id : "",
+      desc_id : "",
+    
+    });
+
+    const handleLotChange =
+    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setlotForm({ ...lotForm, [prop]: event.target.value });
+      console.log(event.target.value)
+    };
+
     const handleAddCollab = () => {
 
       
@@ -490,6 +553,35 @@ const pdfView = (id ) => {
     } )
 
     }
+
+    const handleAddlot = () => {
+
+      
+      setLoading(true)
+      
+      axios.post(`http://127.0.0.1:8000/api/v1/addlot`, {
+      'project_id' : projectid ,
+      'collab_id' : lotForm.collab_id ,
+      'desc_id' : lotForm.desc_id ,
+   
+    
+    }).then ( result => {
+      setLoading(false)
+      setOpenLot(false)
+      console.log(result)
+
+      
+
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
+    }
+
+
+
 
   return (
 
@@ -565,7 +657,7 @@ const pdfView = (id ) => {
 
           <Grid item sm={12} md={12} xs={12}>
           <FormControl fullWidth sx={{ m: 1 }}>
-          <InputLabel  htmlFor="outlined-adornment-amount">Project Name</InputLabel>
+          <InputLabel  htmlFor="outlined-adornment-amount">Nom du projet</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
             value={formValues.projectName}
@@ -580,7 +672,7 @@ const pdfView = (id ) => {
   
 
         <FormControl fullWidth sx={{ m: 1  }}>
-  <InputLabel id="demo-simple-select-label"> phase de la visite</InputLabel>
+  <InputLabel id="demo-simple-select-label"> Type de construction</InputLabel>
   <Select 
     labelId="demo-simple-select-label"
     id="demo-simple-select"
@@ -588,18 +680,26 @@ const pdfView = (id ) => {
     label="phase de la visite"
     onChange={handleChange('constructionType')}
   >
-    <MenuItem value={1}>Suivi de chantier</MenuItem>
-    <MenuItem value={2}>Pré-cloisons</MenuItem>
-    <MenuItem value={4}>Cloisons</MenuItem>
-    <MenuItem value={5}>Pré-livraison</MenuItem>
-    <MenuItem value={3}>OPR</MenuItem>
-    <MenuItem value={6}>Réception</MenuItem>
-    <MenuItem value={7}>Livraison</MenuItem>
-    <MenuItem value={8}>30 Jours</MenuItem>
-    <MenuItem value={9}>GPA</MenuItem>
-    <MenuItem value={10}>Biennale</MenuItem>
-    <MenuItem value={11}>Décennale</MenuItem>
-
+    <MenuItem value={1}>Aeroport</MenuItem>
+    <MenuItem value={2}>Appartement</MenuItem>
+    <MenuItem value={4}>Atelier</MenuItem>
+    <MenuItem value={5}>Atelier d'artiste</MenuItem>
+    <MenuItem value={3}>Boulangerie</MenuItem>
+    <MenuItem value={6}>Boutique</MenuItem>
+    <MenuItem value={7}>Bureaux</MenuItem>
+    <MenuItem value={8}>Cafe</MenuItem>
+    <MenuItem value={9}>Centre administratif</MenuItem>
+    <MenuItem value={10}>Centre commercial</MenuItem>
+    <MenuItem value={11}>Centre culturel</MenuItem>
+    <MenuItem value={12}>Centre d'appels</MenuItem>
+    <MenuItem value={13}>Centre de conferences</MenuItem>
+    <MenuItem value={14}>Centre de traitement</MenuItem>
+    <MenuItem value={15}>Cinema</MenuItem>
+    <MenuItem value={16}>Clinique</MenuItem>
+    <MenuItem value={17}>college</MenuItem>
+    <MenuItem value={18}>Commerce</MenuItem>
+    <MenuItem value={19}>Creche</MenuItem>
+    <MenuItem value={20}>Ecole</MenuItem>
   </Select>
 </FormControl>
         </Grid>
@@ -648,7 +748,7 @@ const pdfView = (id ) => {
   component="label"
   sx={{backgroundColor : "#0e519e"}}
 >
-  Upload Image
+  ajouter une image
   <Input onChange={uploadFile()}
     type="file"
     hidden
@@ -694,7 +794,7 @@ src= {formValues.image_url === '' || formValues.image_url === null || formValues
   variant="contained"
   component="label" onClick={editProject}
 >
-  Edit Project
+  modifier le projet
   
 </Button>
         
@@ -736,14 +836,14 @@ src= {formValues.image_url === '' || formValues.image_url === null || formValues
   alignItems="center" item md={12} sm={12} xs={12} >
 
           <Typography variant="h4" component="div" gutterBottom sx={{m:4}}>
-            Project  documents
+           les documents de projets
           </Typography>
 
           <Button  sx={{backgroundColor : "#0e519e"}}
   variant="contained"
   component="label"
 >
-  Upload Document
+  ajouter un document
   <Input onChange={ uploadDocument()}
     type="file"
     hidden
@@ -759,7 +859,7 @@ src= {formValues.image_url === '' || formValues.image_url === null || formValues
       <Table sx={{ minWidth: 700 }} >
         <TableHead sx={{backgroundColor: "#0e519e"}}>
           <TableRow sx={{backgroundColor: "#0e519e"}}>
-            <StyledTableCell>Document Name </StyledTableCell>
+            <StyledTableCell>Nom de document </StyledTableCell>
            
           
             <StyledTableCell  align="right"></StyledTableCell>
@@ -856,7 +956,7 @@ alignItems="center" item md={12} sm={12} xs={12} >
 variant="contained"
 component="label" onClick={() => setOpenCollaborator(true)}
 >
-Add
+Ajouter un collaborateur
 
 </Button>
 
@@ -869,8 +969,8 @@ Add
 <Table sx={{ minWidth: 700 }} >
   <TableHead sx={{backgroundColor: "blue"}}>
     <TableRow sx={{backgroundColor: "blue"}}>
-      <StyledTableCell>Name </StyledTableCell>
-      <StyledTableCell align="right">organization </StyledTableCell>
+      <StyledTableCell>Nom </StyledTableCell>
+      <StyledTableCell align="right">organisation </StyledTableCell>
       <StyledTableCell align="right">email</StyledTableCell>
       <StyledTableCell align="right">role</StyledTableCell>
       
@@ -914,17 +1014,18 @@ Add
     label="phase de la visite"
 
   >
-    <MenuItem value={1}>Suivi de chantier</MenuItem>
-    <MenuItem value={2}>Pré-cloisons</MenuItem>
-    <MenuItem value={4}>Cloisons</MenuItem>
-    <MenuItem value={5}>Pré-livraison</MenuItem>
-    <MenuItem value={3}>OPR</MenuItem>
-    <MenuItem value={6}>Réception</MenuItem>
-    <MenuItem value={7}>Livraison</MenuItem>
-    <MenuItem value={8}>30 Jours</MenuItem>
-    <MenuItem value={9}>GPA</MenuItem>
-    <MenuItem value={10}>Biennale</MenuItem>
-    <MenuItem value={11}>Décennale</MenuItem>
+    <MenuItem value={1}>Maitre d'oeuvre</MenuItem>
+    <MenuItem value={2}>Maitre d'ouvrage</MenuItem>
+    <MenuItem value={4}>Maitre d'ouvrage délégué</MenuItem>
+    <MenuItem value={5}>AMOE</MenuItem>
+    <MenuItem value={3}>AMOA</MenuItem>
+    <MenuItem value={6}>Assistant à maitrise d'oeuvre</MenuItem>
+    <MenuItem value={7}>Assistant à maitrise d'ouvrage</MenuItem>
+    <MenuItem value={8}>Exploitant</MenuItem>
+    <MenuItem value={9}>Architect</MenuItem>
+    <MenuItem value={10}>Maitre d'oeuvre d'execution</MenuItem>
+    <MenuItem value={11}>Bet Electricité</MenuItem>
+    <MenuItem value={11}>Bet Plomberie</MenuItem>
 
   </Select>
 </FormControl>
@@ -1084,7 +1185,7 @@ alignItems="center" item md={12} sm={12} xs={12} >
 variant="contained"
 component="label" onClick={() => setOpenLot(true)}
 >
-Add
+Ajouter un lot de traveau
 
 </Button>
 
@@ -1097,17 +1198,29 @@ Add
 <Table sx={{ minWidth: 700 }} >
   <TableHead sx={{backgroundColor: "blue"}}>
     <TableRow sx={{backgroundColor: "blue"}}>
-      <StyledTableCell>Name </StyledTableCell>
-      <StyledTableCell align="right">organization </StyledTableCell>
-      <StyledTableCell align="right">email</StyledTableCell>
-      <StyledTableCell align="right">role</StyledTableCell>
+      <StyledTableCell>Nom </StyledTableCell>
+      
+      <StyledTableCell align="right">Collaborateur</StyledTableCell>
       
     
     
     </TableRow>
   </TableHead>
   <TableBody>
-    
+  {aLots.map((row) => (
+      <StyledTableRow key={row.id}>
+        <StyledTableCell >
+          { descs?.filter(desc => desc.id = row.desc_id)[0]?.name }
+        </StyledTableCell>
+
+        <StyledTableCell align="right">
+
+        { collaboratorsRows.filter(collab => collab.id = row.collaborateur_id)[0]?.preName + " " + collaboratorsRows.filter(collab => collab.id = row.collaborateur_id)[0]?.lastName}
+        </StyledTableCell>
+        
+        
+      </StyledTableRow>
+    ))}
   </TableBody>
 </Table>
 </TableContainer>
@@ -1122,86 +1235,51 @@ Add
         <form >
                         <Grid container spacing={4}>
 
-                        <Grid item xs={3}>
-                                <TextField
-                                    label="Numero"
-                                    type="number"
-                                    required
-                                    fullWidth
-                                    name="name"
-                                 
-                                />
-                            </Grid>
+                      
 
                             <Grid item xs={9}>
-                                <TextField
-                                    label="description"
-                                    type="text"
-                                    required
-                                    fullWidth
-                                    name="description"
-                                 
-                                />
+                            <FormControl fullWidth sx={{ m: 1  }}>
+  <InputLabel id="demo-simple-select-label"> Description</InputLabel>
+  <Select 
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={lotForm.desc_id}
+    onChange={handleLotChange('desc_id')}
+    label="phase de la visite"
+
+  >
+    { descs?.map((row) => (
+
+<MenuItem value={row.id}>{row.name}</MenuItem>
+
+    ))}
+    
+  
+
+  </Select>
+</FormControl>
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="Name"
-                                    type="text"
-                                    required
-                                    fullWidth
-                                    name="name"
-                                 
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="societé"
-                                    type="text"
-                                    required
-                                    fullWidth
-                                    name="societé"
-                                 
-                                />
-                            </Grid>
+                         
                             <Grid item xs={12}>
-                                <TextField
-                                    label="abr"
-                                    type="text"
-                                    name="abr"
-                                    required
-                                    fullWidth
-                                   
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="addresse"
-                                    type="text"
-                                    name="addresse"
-                                    required
-                                    fullWidth
-                                 
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="email"
-                                    type="email"
-                                    required
-                                    name="email"
-                                    fullWidth
-                                
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="phone"
-                                    type="number"
-                                    required
-                                    fullWidth
-                                    name="phone"
-                                 
-                                />
+                            <FormControl fullWidth sx={{ m: 1  }}>
+  <InputLabel id="demo-simple-select-label"> Collaborateur</InputLabel>
+  <Select 
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={lotForm.collab_id}
+    onChange={handleLotChange('collab_id')}
+    label="phase de la visite"
+
+  >
+      { collaboratorsRows?.map((row) => (
+
+<MenuItem value={row.id}>{row.preName + " " + row.lastName}</MenuItem>
+
+    ))}
+  
+
+  </Select>
+</FormControl>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button   sx={{backgroundColor : "#0e519e"}}variant="contained" onClick={() => setOpenLot(false)} disableElevation>
@@ -1213,7 +1291,7 @@ Add
                                     color="primary"
                                     type='submit'
                                     disableElevation
-                                    onClick={() => setOpenLot(false)}
+                                    onClick={handleAddlot}
                                 >
                                     add
                                 </Button>

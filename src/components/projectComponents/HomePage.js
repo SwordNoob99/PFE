@@ -93,7 +93,7 @@ function HomePage() {
         </header>{/* End Header */}
         {/* ======= Hero Section ======= */}
         <section id="hero" className="d-flex align-items-center">
-          <div className="container" data-aos="zoom-out" data-aos-delay={100}>
+          <div className="container " data-aos="zoom-out" data-aos-delay={100}>
             <h1>Bienvenue à <span>Architex</span></h1>
             <h2>Un chantier parfaitement construit dans toute sa simplicité.</h2>
             <div className="d-flex">

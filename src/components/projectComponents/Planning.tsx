@@ -164,7 +164,7 @@ export default function Plan(props) {
 
     axios.post(`http://127.0.0.1:8000/api/v1/planning`, {
       'project_id' : projectid ,
-      'name' : "new Event"
+      'name' : "Nouveau événement"
     
     }).then ( result => {
       
@@ -357,7 +357,7 @@ export default function Plan(props) {
 }} >
 
 <div className="tableBanner">
-Evenement
+Événement
 </div>
 <Table  aria-label="custom pagination table">
         <TableBody>
@@ -391,7 +391,7 @@ Evenement
     justifyContent="center">
 
 <div className="tableBanner">
-Planes
+Planning
 </div>
 <Paper elevation={2}>
 <Box sx={{ width: '100%' }}>
@@ -408,7 +408,7 @@ Planes
 <Grid spacing={2} container sm={12} md={12} xs={12} >
 
 <FormControl fullWidth sx={{ mt: 5 }}>
-    <InputLabel htmlFor="outlined-adornment-amount">Name</InputLabel>
+    <InputLabel htmlFor="outlined-adornment-amount">Nom</InputLabel>
     <OutlinedInput
       id="outlined-adornment-amount"
           value={selectedPlanning.name}
