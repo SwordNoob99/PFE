@@ -33,7 +33,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
+
+import axios  from "./AxiosInstance";
 import { add } from '../features/userProjectsSlice';
 import CircularProgress from '@mui/material/CircularProgress';
 import { makeStyles } from "@material-ui/core/styles";
@@ -50,6 +51,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 
 
@@ -94,7 +96,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
   const add = () => {
 
      
-    axios.post(`http://127.0.0.1:8000/api/v1/observation`, {
+     axios.post(`/observation`, {
       'projectId' : projectid ,
     
 
@@ -109,12 +111,24 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                   
     }
     ).catch(error => {
-      console.log(error)
+      if (error.response) {
+        // Request made and server responded
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+        return Promise.reject(error.response);
     } )
 
-    axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+    axios.post(`/getObservations`, {
       'projectId' : projectid ,
-      
+      headers: {"Access-Control-Allow-Origin": "*"}
 
      
     
@@ -166,10 +180,16 @@ const handleSelectedObservationChange =
   
 };
 
+
+const [aLots , setALots] =  useState([])
+
 useEffect(() => {
 
+
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+
   
-  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+  axios.post(`/getObservations`, {
     'projectId' : projectid ,
     
 
@@ -187,6 +207,25 @@ useEffect(() => {
     console.log(error)
   } )
 
+
+  axios.post(`http://127.0.0.1:8000/api/v1/getLots`, {
+      'project_id' : projectid ,
+
+    
+    }).then ( result => {
+
+      
+
+      setALots(result.data.data)
+  
+      
+  
+                  
+    }
+    ).catch(error => {
+      console.log(error)
+    } )
+
   
 
 } , [])
@@ -194,8 +233,8 @@ useEffect(() => {
  const save = () => {
 
 
-  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-axios.put(`http://127.0.0.1:8000/api/v1/test`, {
+
+axios.put(`/test`, {
     'projectId' : projectid ,
     'id' : selectedObservation.id ,
     'localisation' : selectedObservation.localisation ,
@@ -209,11 +248,76 @@ axios.put(`http://127.0.0.1:8000/api/v1/test`, {
 
    
   
-  })
+  }).then ( result => {
+     
+                  
+  }
+  ).catch(error => {
+    console.log(error)
+    if (error.response) {
+      // Request made and server responded
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+      return Promise.reject(error.response);
+  } )
 
 
 
 }
+
+
+
+function  promise   ()  {
+
+  
+    
+        
+          
+  // SEND REQUEST TO ADD PROJECT
+  axios.put(`/test`, {
+    'projectId' : projectid ,
+    'id' : selectedObservation.id ,
+    'localisation' : selectedObservation.localisation ,
+    'description' : selectedObservation.description ,
+    'created' : selectedObservation.created ,
+    'limite' : date ,
+    'lever' : selectedObservation.lever ,
+    'lot' : selectedObservation.lot ,
+    'status' : selectedObservation.status ,
+    
+  
+   
+  
+  })
+
+    
+  axios.post(`/getObservations`, {
+    'projectId' : projectid ,
+    
+
+   
+  
+  }).then ( result => {
+   
+    setRows(result.data.data)
+    
+    
+   
+                
+  }
+  ).catch(error => {
+    console.log(error)
+  } )
+}
+
 
  
 const [date , setDate] = useState("")
@@ -235,7 +339,7 @@ const ClickTable = (rowId) => {
 
 const deleteObservation = () => {
 
-  axios.post(`http://127.0.0.1:8000/api/v1/deleteObservation`, {
+  axios.post(`/deleteObservation`, {
     'projectId' : projectid ,
     'id' : selectedObservation.id
 
@@ -253,7 +357,7 @@ const deleteObservation = () => {
   } )
 
 
-  axios.post(`http://127.0.0.1:8000/api/v1/getObservations`, {
+  axios.post(`/getObservations`, {
     'projectId' : projectid ,
     
 
@@ -288,16 +392,17 @@ const deleteObservation = () => {
    <DialogTitle>Modifier l'observation</DialogTitle>
         <DialogContent>
         
-        <form >
+        <form onSubmit={(e) => e.preventDefault()} >
                         <Grid container spacing={4}>
+                       
 
-                        <Grid item xs={3}>
+                        <Grid  item xs={3}>
                                 <TextField
                                     label="Localisation"
                                     type="test"
                                     required
                                     fullWidth
-                                    name="name"
+                                    name="localisation"
                                     value={selectedObservation?.localisation}
                                     onChange = {handleSelectedObservationChange("localisation")}
                                  
@@ -416,7 +521,7 @@ md : 800 ,
                                     color="primary"
                                     type='submit'
                                     disableElevation
-                                    onClick={save}
+                                    onClick={ () => promise()}
                                 >
                                     enregistrer
                                 </Button>

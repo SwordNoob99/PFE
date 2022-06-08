@@ -575,6 +575,37 @@ const pdfView = (id ) => {
                   
     }
     ).catch(error => {
+      if (error.response) {
+        // Request made and server responded
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+    } )
+
+
+    axios.post(`http://127.0.0.1:8000/api/v1/getLots`, {
+      'project_id' : projectid ,
+
+    
+    }).then ( result => {
+
+      
+
+      setALots(result.data.data)
+      console.log("lot" + result.data.data)
+  
+      
+  
+                  
+    }
+    ).catch(error => {
       console.log(error)
     } )
 
@@ -1209,13 +1240,13 @@ Ajouter un lot de traveau
   <TableBody>
   {aLots.map((row) => (
       <StyledTableRow key={row.id}>
-        <StyledTableCell >
-          { descs?.filter(desc => desc.id = row.desc_id)[0]?.name }
+        <StyledTableCell   key={row.id }>
+        { row.name }
         </StyledTableCell>
 
-        <StyledTableCell align="right">
+        <StyledTableCell  key={row.id } align="right">
 
-        { collaboratorsRows.filter(collab => collab.id = row.collaborateur_id)[0]?.preName + " " + collaboratorsRows.filter(collab => collab.id = row.collaborateur_id)[0]?.lastName}
+        { row.preName + " " + row.lastName}
         </StyledTableCell>
         
         
@@ -1232,7 +1263,7 @@ Ajouter un lot de traveau
                   </DialogTitle>
    
         <DialogContent>
-        <form >
+        <form  onSubmit={(e) => e.preventDefault()}>
                         <Grid container spacing={4}>
 
                       
@@ -1250,7 +1281,7 @@ Ajouter un lot de traveau
   >
     { descs?.map((row) => (
 
-<MenuItem value={row.id}>{row.name}</MenuItem>
+<MenuItem key = {row.id} value={row.id}>{row.name}</MenuItem>
 
     ))}
     
@@ -1273,7 +1304,7 @@ Ajouter un lot de traveau
   >
       { collaboratorsRows?.map((row) => (
 
-<MenuItem value={row.id}>{row.preName + " " + row.lastName}</MenuItem>
+<MenuItem key = {row.id} value={row.id}>{row.preName + " " + row.lastName}</MenuItem>
 
     ))}
   
